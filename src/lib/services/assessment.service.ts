@@ -14,6 +14,7 @@ import {
 import { tokenService } from "@/lib/services/token.service";
 import { auditService } from "@/lib/services/audit.service";
 import { sendEmail } from "@/lib/email/send";
+import { renderEmail } from "@/lib/email/template";
 import type {
   Assessment,
   CampaignScope,
@@ -46,6 +47,15 @@ function appUrl(path: string): string {
 function firstName(name: string | null | undefined): string {
   if (!name) return "there";
   return name.trim().split(/\s+/)[0] || "there";
+}
+
+/** "12 August 2026" — unambiguous across locales, unlike 08/12/2026. */
+function longDate(date: Date): string {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 /** Count active questions and sub-competencies for a job family (cheap). */
@@ -365,15 +375,29 @@ export const assessmentService = {
       createdBy: actorId,
     });
     const link = appUrl(`/a/${raw}`);
+    const campaign = await campaignRepo.findById(assessment.campaignId);
+    const meta = [];
+    if (campaign?.selfAssessmentDeadline) {
+      meta.push({ label: "Due by", value: longDate(campaign.selfAssessmentDeadline) });
+    }
+    meta.push({ label: "Takes about", value: "30–45 minutes" });
+
     await sendEmail({
       to: employee.email,
-      subject: "Your competency assessment",
-      text:
-        `Hi ${firstName(employee.fullName)},\n\n` +
-        `You've been asked to complete a competency self-assessment. ` +
-        `It takes about 30–45 minutes and you can save and resume any time.\n\n` +
-        `Open your secure assessment link (do not share it):\n${link}\n\n` +
-        `This link is personal to you and expires in 30 days.`,
+      subject: "Your competency assessment is ready",
+      ...renderEmail({
+        heading: "Your competency assessment is ready",
+        greeting: firstName(employee.fullName),
+        body: [
+          "You've been asked to complete a competency self-assessment. Your answers are compared with your line manager's ratings to identify strengths and development gaps.",
+          "Every answer saves automatically, so you can stop and pick up where you left off at any time.",
+        ],
+        meta,
+        cta: { label: "Start assessment", url: link },
+        callout:
+          "This link signs you in directly, so please don't forward it to anyone.",
+        footnote: "The link is personal to you and expires in 30 days.",
+      }),
     });
     return link;
   },
@@ -394,15 +418,32 @@ export const assessmentService = {
     if (!manager) return null;
     const raw = await tokenService.issueToken(assessment._id, "manager");
     const link = appUrl(`/a/${raw}`);
+    const employeeName = employee?.fullName ?? "Your team member";
+    const campaign = await campaignRepo.findById(assessment.campaignId);
+    const meta = [{ label: "Employee", value: employeeName }];
+    if (campaign?.managerAssessmentDeadline) {
+      meta.push({
+        label: "Due by",
+        value: longDate(campaign.managerAssessmentDeadline),
+      });
+    }
+
     await sendEmail({
       to: manager.email,
-      subject: `Score a competency assessment: ${employee?.fullName ?? "your report"}`,
-      text:
-        `Hi ${firstName(manager.fullName)},\n\n` +
-        `${employee?.fullName ?? "Your team member"} has completed their ` +
-        `self-assessment. Please rate them (1–5) on each competency.\n\n` +
-        `Open your secure scoring link (do not share it):\n${link}\n\n` +
-        `This link is personal to you and expires in 30 days.`,
+      subject: `Rate ${employeeName}'s competency assessment`,
+      ...renderEmail({
+        heading: `${employeeName} needs your rating`,
+        greeting: firstName(manager.fullName),
+        body: [
+          `${employeeName} has submitted their self-assessment. Rate them from 1 to 5 on each competency so the gap analysis can be completed.`,
+          "Your ratings stay private from the employee until both sides are submitted.",
+        ],
+        meta,
+        cta: { label: "Start rating", url: link },
+        callout:
+          "This link signs you in directly, so please don't forward it to anyone.",
+        footnote: "The link is personal to you and expires in 30 days.",
+      }),
     });
     return link;
   },

@@ -6,6 +6,7 @@ import { campaignRepo } from "@/lib/db/repositories/campaign.repository";
 import { userRepo } from "@/lib/db/repositories/user.repository";
 import { emailEnabled } from "@/lib/email/client";
 import { sendEmails, type EmailMessage } from "@/lib/email/send";
+import { renderEmail } from "@/lib/email/template";
 import { CAMPAIGN_STATUS, STATUS } from "@/lib/domain/constants";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -15,6 +16,8 @@ interface EmailIntent {
   subject: string;
   text: string;
   link: string | null;
+  /** Button label; defaults to a generic "Open in Caliber". */
+  ctaLabel?: string;
 }
 
 function appUrl(path: string | null): string | null {
@@ -47,17 +50,24 @@ async function dispatchEmails(intents: EmailIntent[]): Promise<void> {
     new Map(intents.map((i) => [i.recipientId.toString(), i.recipientId])).values(),
   );
   const users = await userRepo.findManyByIds(ids);
-  const emailById = new Map(users.map((u) => [u._id.toString(), u.email]));
+  const userById = new Map(users.map((u) => [u._id.toString(), u]));
 
   const messages: EmailMessage[] = [];
   for (const intent of intents) {
-    const to = emailById.get(intent.recipientId.toString());
-    if (!to) continue;
+    const user = userById.get(intent.recipientId.toString());
+    if (!user?.email) continue;
     const url = appUrl(intent.link);
     messages.push({
-      to,
+      to: user.email,
       subject: intent.subject,
-      text: url ? `${intent.text}\n\nOpen: ${url}` : intent.text,
+      ...renderEmail({
+        heading: intent.subject,
+        greeting: firstName(user.fullName),
+        body: [intent.text],
+        cta: url
+          ? { label: intent.ctaLabel ?? "Open in Caliber", url }
+          : undefined,
+      }),
     });
   }
   await sendEmails(messages);
@@ -144,6 +154,7 @@ export const notificationService = {
               subject: "Self-assessment reminder",
               text: `Your self-assessment for "${campaign.name}" is ${dueLabel(selfRemaining)}.`,
               link: `/assessment/${aid}`,
+              ctaLabel: "Continue assessment",
             });
           }
         }
@@ -170,6 +181,7 @@ export const notificationService = {
               subject: "Manager rating reminder",
               text: `A rating for "${campaign.name}" is ${dueLabel(mgrRemaining)}.`,
               link: `/rate/${aid}`,
+              ctaLabel: "Continue rating",
             });
           }
         }
@@ -229,12 +241,23 @@ export const notificationService = {
         messages.push({
           to: employee?.email ?? "",
           subject: "Your competency assessment is due",
-          text:
-            `Hi ${first},\n\n` +
-            `Your ${campaign.name} competency assessment is due by ${selfDeadline}` +
-            `${selfDays >= 0 ? ` (${selfDays} day(s) remaining)` : ""}.\n` +
-            `Estimated time: ~45 minutes — you can save and resume any time.\n\n` +
-            (url ? `Start your assessment: ${url}\n` : ""),
+          ...renderEmail({
+            heading: "Your competency assessment is due",
+            greeting: first,
+            body: [
+              `You've been included in the ${campaign.name} competency assessment. Your answers are compared with your line manager's ratings to identify strengths and development gaps.`,
+              "Every answer saves automatically, so you can stop and resume at any time.",
+            ],
+            meta: [
+              { label: "Campaign", value: campaign.name },
+              { label: "Due by", value: selfDeadline },
+              ...(selfDays >= 0
+                ? [{ label: "Time left", value: `${selfDays} day${selfDays === 1 ? "" : "s"}` }]
+                : []),
+              { label: "Takes about", value: "45 minutes" },
+            ],
+            cta: url ? { label: "Start assessment", url } : undefined,
+          }),
         });
       }
     }
@@ -269,17 +292,23 @@ export const notificationService = {
         const manager = userById.get(managerId.toString());
         const url = appUrl(link);
         const first = firstName(manager?.fullName ?? null);
-        const list = names.map((n) => `  • ${n}`).join("\n");
         messages.push({
           to: manager?.email ?? "",
-          subject: "Team competency assessments due",
-          text:
-            `Hi ${first},\n\n` +
-            `You have ${names.length} team member(s) to rate for ${campaign.name}:\n` +
-            `${list}\n\n` +
-            `Estimated time: ~20 minutes per person.\n` +
-            `Deadline: ${mgrDeadline}.\n\n` +
-            (url ? `Open your manager dashboard: ${url}\n` : ""),
+          subject: `Rate ${names.length} team member${names.length === 1 ? "" : "s"} for ${campaign.name}`,
+          ...renderEmail({
+            heading: `You have ${names.length} team member${names.length === 1 ? "" : "s"} to rate`,
+            greeting: first,
+            body: [
+              `The ${campaign.name} competency assessment is underway. Rate each person from 1 to 5 on every competency so their gap analysis can be completed.`,
+              `To rate: ${names.join(", ")}.`,
+            ],
+            meta: [
+              { label: "Campaign", value: campaign.name },
+              { label: "Due by", value: mgrDeadline },
+              { label: "Takes about", value: "20 minutes per person" },
+            ],
+            cta: url ? { label: "Open manager dashboard", url } : undefined,
+          }),
         });
       }
     }
@@ -316,6 +345,7 @@ export const notificationService = {
           subject: "Assessment results ready",
           text: message,
           link: `/assessment/${a._id.toString()}`,
+          ctaLabel: "View results",
         });
       }
     }
