@@ -118,7 +118,7 @@ export default async function EmployeesPage({
 
       <div className="grid gap-4 sm:grid-cols-3">
         <KpiCard
-          label="Employees"
+          label="People"
           value={totalActive}
           icon={Users}
           hint="active in the directory"

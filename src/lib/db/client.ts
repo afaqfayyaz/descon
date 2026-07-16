@@ -12,16 +12,31 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-let clientPromise: Promise<MongoClient>;
+/**
+ * Serverless-safe connection options. Each warm function instance keeps its own
+ * pool, and instances scale out independently, so cap the pool to stay well
+ * under the cluster's connection limit. Fail fast rather than letting a request
+ * hang for the driver's 30s default when the cluster is unreachable.
+ */
+const options = {
+  maxPoolSize: 10,
+  minPoolSize: 0,
+  serverSelectionTimeoutMS: 8000,
+  connectTimeoutMS: 8000,
+  socketTimeoutMS: 45000,
+  maxIdleTimeMS: 60000,
+  retryWrites: true,
+};
 
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClientPromise) {
-    global._mongoClientPromise = new MongoClient(uri).connect();
-  }
-  clientPromise = global._mongoClientPromise;
-} else {
-  clientPromise = new MongoClient(uri).connect();
+/**
+ * Cache the client on globalThis in every environment. Serverless instances are
+ * frozen between invocations and reused, so a module-scoped client would be
+ * rebuilt on each cold start while a cached one is reused across invocations.
+ */
+if (!global._mongoClientPromise) {
+  global._mongoClientPromise = new MongoClient(uri, options).connect();
 }
+const clientPromise: Promise<MongoClient> = global._mongoClientPromise;
 
 export async function getClient(): Promise<MongoClient> {
   return clientPromise;

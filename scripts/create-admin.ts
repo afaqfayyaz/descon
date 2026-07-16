@@ -50,7 +50,12 @@ async function main() {
     department: "HR",
     jobFamily: families[0]?._id ?? new ObjectId(),
     lineManagerId: null,
-    systemRoles: ["hr_admin", "employee"],
+    // hr_admin only — this is an administrator account, not a person being
+    // assessed, so it must not show up in the employee directory or headcount.
+    // The employee role grants nothing extra anyway: the permissions staff rely
+    // on (assessment.self.submit, assessment.view.own) are open to any signed-in
+    // user via "*".
+    systemRoles: ["hr_admin"],
     avatarUrl: null,
     phoneNumber: null,
     joinedAt: now,
