@@ -1,0 +1,22 @@
+{
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["src/lib/domain/**/*.ts"],
+      "excludedFiles": ["src/lib/domain/**/*.test.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/lib/db/*", "@/lib/email/*", "@/lib/jobs/*", "@/lib/services/*"],
+                "message": "The domain layer must not depend on infrastructure or services (CODING_STANDARDS.md §Domain)."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

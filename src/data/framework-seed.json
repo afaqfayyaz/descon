@@ -1,0 +1,4212 @@
+{
+  "jobFamily": {
+    "name": "Project Management",
+    "code": "PM",
+    "description": "Core PM competency framework based on PMI standards"
+  },
+  "roles": [
+    {
+      "name": "In-charge/DM",
+      "code": "IC_DM",
+      "level": 3
+    },
+    {
+      "name": "Manager",
+      "code": "MGR",
+      "level": 5
+    },
+    {
+      "name": "Head",
+      "code": "HEAD",
+      "level": 7
+    },
+    {
+      "name": "Chief",
+      "code": "CHIEF",
+      "level": 9
+    }
+  ],
+  "ratingScale": [
+    {
+      "level": 1,
+      "label": "Amateur"
+    },
+    {
+      "level": 2,
+      "label": "Collaborator"
+    },
+    {
+      "level": 3,
+      "label": "Enabler"
+    },
+    {
+      "level": 4,
+      "label": "Driving Force"
+    },
+    {
+      "level": 5,
+      "label": "Visionary"
+    }
+  ],
+  "areas": [
+    {
+      "code": "1",
+      "name": "Root Cause Analysis & Risk Assessment",
+      "sequence": 1,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "1.1",
+          "name": "Root Cause & Risk Management Mastery",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A major project deliverable is consistently late. What is your first step?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Ask the team to work overtime to recover the delay",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Log the delay in the risk register and notify the sponsor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a structured root cause analysis (5-Whys or fishbone) to identify the real driver",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Redesign the project schedule and present a systemic fix with predictive indicators to prevent recurrence",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "During project execution a vendor fails to deliver. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Escalate immediately to senior management",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Document the issue and investigate the vendor's reason",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a root cause review, trigger the contingency plan, and adjust the risk register",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a cross-functional risk response, implement lessons-learned and update organisational risk frameworks",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A risk you identified 3 months ago has now materialised. What does this indicate about your risk approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Risks are unpredictable; there is nothing more you could have done",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "The risk register should be updated more frequently",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Proactive monitoring and early-warning indicators were in place but response time needs improvement",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "The risk management strategy requires a full review; you implement a real-time risk intelligence system",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "1.2",
+          "name": "Strategic Risk & Failure Prevention",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Before a project kicks off, how do you approach risk identification?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait until risks appear during execution",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Use a basic checklist from previous projects",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Facilitate a structured risk workshop using SWOT and probability/impact matrices",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Develop a comprehensive risk taxonomy aligned to organisational strategy with Monte Carlo simulations",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A key technical assumption in your project is challenged by a stakeholder late in planning. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Dismiss it since planning is already done",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Log it as an issue and note it for later review",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Re-evaluate the assumption formally, update the risk register, and communicate impact to the team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Integrate assumption management into project governance and present scenario analysis to leadership",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "What best describes how you prevent project failure proactively?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "React to problems as they arise",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review lessons learned from past projects before starting a new one",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Build pre-mortems, stress tests, and early warning dashboards into every project plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead organisational failure prevention programmes and embed risk intelligence in project culture",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "1.3",
+          "name": "Integrated Risk & Impact Analysis",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A scope change request arrives mid-project. How do you assess its impact?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept the change if the client requests it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Informally discuss impact with the project team",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct an integrated impact analysis covering cost, time, quality, and risks; update all affected plans",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Develop a strategic impact model linking scope changes to portfolio-level risks and executive decision frameworks",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Two project risks appear to be interdependent. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Treat them as separate items in the risk register",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Flag the link in a comment and monitor both",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct an integrated risk analysis to assess compounding effects and update mitigation strategies",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build a risk dependency map for the full project and present it as part of the portfolio risk review",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "When presenting a project risk report to leadership, what does your report typically include?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "A simple list of current risks",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Risk descriptions with probability and impact ratings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Risk heat maps, trend analysis, and integrated cost-schedule risk impact summaries",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Predictive analytics, scenario planning, and strategic risk response recommendations aligned to business objectives",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "1.4",
+          "name": "Proactive Risk & Operational Resilience",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you ensure your project can withstand unexpected disruptions?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Hope that disruptions do not occur",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Keep a list of backup resources",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a resilience plan with contingency budgets, alternative suppliers, and tested recovery procedures",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise resilience planning, embedding operational continuity into project and organisational governance",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A critical team member suddenly leaves mid-project. What action shows the best resilience approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Pause the project until a replacement is found",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Redistribute tasks among remaining team members",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Activate a pre-planned succession/knowledge transfer plan and re-baseline the schedule",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "The departure is managed seamlessly because cross-training and succession plans were built in from day one",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How frequently do you review operational risks during a project?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Only when a problem occurs",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "At monthly project status meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Weekly, using leading indicators and a dynamic risk register updated by the whole team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Continuously through an automated risk monitoring system that triggers alerts and board-level dashboards",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "1.5",
+          "name": "Executive Risk Strategy & Innovation",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you align project risk strategy with organisational strategy?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I focus on project risks only; strategy is leadership's responsibility",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I share risk reports with leadership when asked",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I ensure project risk appetite is defined in line with organisational strategy and communicated to the team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I shape enterprise risk strategy, influencing how the organisation approaches risk at portfolio and board level",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A new emerging technology could either significantly benefit or threaten your project. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Avoid it until it is more established",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Research it and note it as a potential risk",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a structured innovation risk assessment and present a balanced recommendation to stakeholders",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the evaluation, build a business case, and drive the adoption or mitigation decision at executive level",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "What best describes your approach to risk innovation within your team?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Risk management is a compliance requirement; I complete the forms",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I encourage team members to raise risks",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I foster a risk-aware culture with regular workshops and reward proactive risk identification",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I mentor the organisation in risk innovation, developing new methodologies and publishing internal best practices",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "2",
+      "name": "Stakeholder & Contract Management",
+      "sequence": 2,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "2.1",
+          "name": "Strategic Stakeholder & Contract Governance",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A senior stakeholder changes their position on a key project requirement. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept the change and inform the team",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Document the change and seek approval from the sponsor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a stakeholder impact analysis, update the engagement plan, and negotiate a formal change order",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use the change to re-align project governance frameworks and update the contract management strategy",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you ensure contracts remain aligned with project objectives throughout delivery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Review the contract only if a dispute arises",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Check key contract milestones at project meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Maintain a contract compliance tracker and conduct regular governance reviews with the legal team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design and lead contract governance processes that embed compliance into all project decisions and vendor relationships",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A contractor is underperforming against contract KPIs. What is your first course of action?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Give the contractor more time to improve",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Issue a written warning and document the non-compliance",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Initiate a formal performance review, invoke contractual remedies, and escalate through governance channels",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic vendor partnership review and present findings to the executive committee",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2.2",
+          "name": "Visionary Stakeholder & Contract Negotiation",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 2,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Two key stakeholders have opposing views on project priorities. How do you handle this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Let the project sponsor decide",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Hold separate meetings with each to understand their positions",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Facilitate a structured negotiation session, identify shared interests, and agree a priority framework",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design a stakeholder alignment process that systematically resolves conflicts and prevents escalation across the programme",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A vendor is requesting a contract amendment that would benefit them but risk your project timeline. How do you negotiate?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Reject the amendment outright",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Agree to part of the amendment to maintain the relationship",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Analyse the full impact, prepare a counter-proposal with trade-offs, and negotiate from a data-driven position",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic negotiation that achieves a win-win outcome while protecting the organisation's long-term interests",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you prepare for a high-stakes negotiation with a client over project delays?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Go in with a flexible mindset and see how it plays out",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Prepare a list of reasons for the delay and expected recovery actions",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a structured negotiation brief with scenario analysis, concession strategy, and BATNA",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Coach the team in advanced negotiation strategy and personally lead the session using evidence-based techniques",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2.3",
+          "name": "Stakeholder-Centric Contract Governance",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 2,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A client reports dissatisfaction with a deliverable that technically meets contract specifications. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Point out the deliverable meets the contract and close the issue",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Apologise and offer to review the specification",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a stakeholder satisfaction review and develop a remediation plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use the situation to redesign contract quality frameworks to better capture stakeholder value expectations",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you ensure stakeholder expectations are embedded in contract terms?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Contracts are handled by the legal team; my role is delivery",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review final contracts before signing to check key deliverables are included",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Actively contribute to contract drafting, ensuring stakeholder requirements are translated into measurable contract terms",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design governance frameworks that systematically translate stakeholder strategy into binding contractual obligations",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A dispute arises over contract interpretation between your team and a vendor. What is your approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Escalate immediately to legal counsel",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review the contract and share your interpretation in writing",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Facilitate a joint contract review, seek expert opinion, and propose a mutually agreed resolution",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a structured dispute resolution process and use the experience to improve contract clarity standards organisation-wide",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2.4",
+          "name": "Strategic Contract Compliance & Negotiation",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A project team member unknowingly violates a contract obligation. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Address it quietly internally and hope the client does not notice",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Inform the team member and document the breach",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a contract compliance audit, notify the client proactively, and put corrective measures in place",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a compliance programme review, implement training, and redesign contract awareness processes across the project",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you ensure your project team understands key contract obligations?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Share the contract with the team lead only",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Summarise key points in the project kickoff meeting",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop contract obligation registers, conduct onboarding sessions, and track compliance throughout delivery",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Create organisational contract literacy programmes and embed compliance accountability into governance structures",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "At project close, a contract deliverable was not fully met. How do you handle it?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Close the project and deal with it if the client raises it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Document the gap and include it in the lessons-learned report",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a formal contract close-out review and negotiate an agreed resolution with the client",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a post-contract review, identify systemic compliance gaps, and drive improvements in contract management practice",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2.5",
+          "name": "Ethical Stakeholder & Contract Leadership",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 4
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A powerful stakeholder pressures you to fast-track a deliverable in a way that cuts corners on quality. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Comply to maintain the relationship",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Express concern but proceed if the stakeholder insists",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Clearly communicate the quality and risk implications and propose a compliant alternative",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Uphold ethical standards, escalate if necessary, and use the situation to strengthen project governance frameworks",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "You discover a vendor has offered a team member an inappropriate gift. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Ignore it as a minor matter",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Speak to the team member informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Follow the ethics and conflict-of-interest policy, formally report and document the incident",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an ethics review, strengthen vendor conduct clauses in contracts, and run an anti-corruption awareness programme",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A stakeholder requests project data that you are not authorised to share. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Share it to maintain the relationship",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Politely decline without explanation",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Explain the data governance policy and offer an alternative compliant form of the data",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use the situation to lead a data governance and stakeholder access policy review across the programme",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2.6",
+          "name": "Stakeholder & Contract Performance Optimization",
+          "sequence": 6,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A vendor consistently delivers on time but quality is below expectations. How do you manage this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue as is to avoid disrupting the timeline",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the quality concern informally with the vendor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Invoke contractual quality clauses and implement a structured improvement plan with measurable milestones",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic vendor performance transformation, redesigning KPIs and SLA frameworks for long-term improvement",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you measure stakeholder satisfaction during project delivery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Rely on informal feedback and gut feeling",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Send a satisfaction survey at project closure",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Use regular structured check-ins, satisfaction surveys at key milestones, and a stakeholder engagement index",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design and implement a continuous stakeholder intelligence system that feeds into project governance and strategy",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "At project end, a contract is 95% complete but final payment is disputed. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept the dispute and absorb the cost",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Negotiate informally with the client",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Initiate a formal contract close-out procedure with documented evidence and escalate through governance",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic contract dispute resolution process and use the case to strengthen contractual close-out standards",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "3",
+      "name": "Project Planning & Execution",
+      "sequence": 3,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "3.1",
+          "name": "Enterprise Project Strategy & Execution",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "You are asked to lead a large, complex project with multiple interdependencies. How do you start?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Assign tasks and start executing",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Create a basic project plan with key milestones",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a comprehensive project charter, WBS, and integrated master schedule with dependencies mapped",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design an enterprise project execution framework aligned to organisational strategy with full portfolio integration",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Your project is falling behind schedule. What is your approach to recovery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Inform the client and hope to recover naturally",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Work overtime with the team to catch up",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct schedule analysis, implement fast-tracking or crashing, update the plan, and communicate formally",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a full project recovery strategy including resource reallocation and executive re-baselining",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure project execution stays aligned with strategic objectives?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Focus on delivery; strategy is the sponsor's job",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review strategic objectives at project start",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Track strategic alignment through KPIs, conduct regular governance reviews, and adjust priorities when needed",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Embed strategic portfolio management practices ensuring every project decision is traceable to organisational objectives",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.2",
+          "name": "Strategic Project Planning & Optimization",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you develop a project schedule for a 12-month infrastructure project?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "List tasks and estimate durations based on experience",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Create a Gantt chart with key deliverable milestones",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a resource-loaded baseline schedule with critical path analysis, risks, and buffer allocation",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use advanced scheduling techniques (CCPM, Monte Carlo simulation) and integrate into an enterprise portfolio system",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A project scope is unclear at the start. How do you handle planning?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Start work and refine as you go",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Request a scope document from the client before proceeding",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Facilitate scope definition workshops, develop a detailed WBS, and obtain formal sign-off before planning",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use progressive elaboration techniques with rolling wave planning and strategic horizon management",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you optimise a project plan with too many parallel workstreams causing resource overload?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Add more resources",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Extend the timeline to reduce pressure",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct resource levelling, re-sequence activities, and update the schedule with realistic allocations",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Redesign the project execution strategy with a phased delivery model and present optimised options to leadership",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.3",
+          "name": "Project Governance & Compliance Integration",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A project team member proposes bypassing a compliance step to save time. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Allow it if the team member is confident the risk is low",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Flag the risk but let the team decide",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Reject the bypass, document the decision, and ensure all compliance requirements are met",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Use the situation to strengthen project governance frameworks and deliver a compliance refresher across the team",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you set up project governance for a large cross-functional initiative?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Hold weekly meetings and use email for updates",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Set up a steering committee and produce monthly reports",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design a formal governance framework with RACI, decision escalation paths, and assurance reviews",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise governance design integrating project governance into organisational policy and board reporting",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A regulatory change mid-project affects your delivery approach. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue as planned and address compliance after delivery",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Notify stakeholders and pause affected workstreams",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct an impact assessment, update the project plan and risk register, and communicate through governance channels",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a rapid compliance response, re-scope the project, and present a strategic options paper to the executive committee",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.4",
+          "name": "Project Monitoring & Refinement",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 4
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you monitor project health on an ongoing basis?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Check in with the team informally each week",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Track budget and schedule at monthly meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Use Earned Value Management, variance analysis, and a performance dashboard updated weekly",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Implement a real-time project intelligence system with predictive analytics and automated exception reporting",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A project dashboard shows cost overrun at 15% while schedule is on track. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue monitoring; it may self-correct",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Alert the sponsor and wait for guidance",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Investigate root causes, quantify the forecast overrun, develop corrective options, and present to governance",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a project financial recovery strategy, adjust the financial model, and implement new cost controls",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A project deliverable has been completed but quality is borderline acceptable. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept it to avoid delay",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Request the team rework the specific area",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a formal quality review against acceptance criteria, document findings, and agree a structured rework plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Implement a quality assurance process refinement programme to prevent similar issues across all future deliverables",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.5",
+          "name": "Cross-Functional Project Leadership",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Two departments in your project have conflicting priorities. How do you resolve this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Escalate to the project sponsor",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Hold separate meetings with each department head",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Facilitate a cross-functional alignment workshop, define shared objectives, and document agreed priorities",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design a cross-functional governance model that systematically resolves interdependencies and presents unified priorities to leadership",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A team member from another department is not meeting their project commitments. How do you manage this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept it; they report to a different manager",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the concern informally with their manager",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Have a structured performance conversation, document commitments, escalate through governance if unresolved",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a cross-functional accountability framework review and align departmental KPIs to project delivery outcomes",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you foster effective collaboration across teams with very different working styles?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Let each team work in its own way",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Set shared goals and hold regular joint meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a team collaboration assessment, design joint ways-of-working protocols, and facilitate team-building sessions",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an organisation-wide collaboration capability development programme as part of the project methodology",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4",
+      "name": "Proposal Development & Internal Coordination",
+      "sequence": 4,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "4.1",
+          "name": "Proposal Development & Governance",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "You are preparing a proposal for a major client. What is your process?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Compile previous proposals and adapt the content",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Follow the client's RFP template and fill in the required sections",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a win strategy, conduct a structured bid review, and tailor the proposal to client-specific value drivers",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the proposal as a strategic business opportunity, directing a multi-disciplinary bid team",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A proposal is due in 5 days but key technical input is delayed. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Submit what you have and note the gaps",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Request an extension from the client",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Escalate internally, prioritise critical inputs, implement a rapid review cycle, and submit on time",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a proposal resilience review and redesign the internal contribution process for all future bids",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "After submitting a proposal, your team receives feedback that it lacked strategic depth. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Note the feedback for next time",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Apologise and offer to resubmit",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a proposal debrief, identify root causes, and implement a quality improvement plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a proposal centre of excellence review and redefine the organisation's proposal quality standards",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4.2",
+          "name": "Proposal Alignment & Optimization",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 2,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you ensure a proposal is aligned with internal capabilities before submission?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Trust the team leads to flag if they cannot deliver",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Conduct a basic capacity check with department heads",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a resource and capability matrix, validate against current workload, and get formal sign-off",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise-wide bid governance process that aligns proposals to strategic capacity planning",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Two proposals are competing for the same internal resources. How do you manage the conflict?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "First come, first served",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Escalate to the executive team",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a priority assessment based on strategic value, negotiate resource allocation, and document the decision",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design a portfolio-level bid resource governance model that prioritises bids against strategic objectives",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you continuously improve proposal win rates?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Submit as many proposals as possible",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review won/lost bids occasionally to identify patterns",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Maintain a bid intelligence database, conduct structured win/loss reviews, and apply findings to future proposals",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic proposal optimisation programme with data-driven win rate analytics and executive sponsorship",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4.3",
+          "name": "Communication & Negotiation Excellence",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 2,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A client challenges the pricing in your proposal. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Offer a discount to close the deal",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Explain the cost breakdown and defend the price",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Present a value-based justification, explore alternative pricing models, and negotiate terms that protect margins",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic pricing negotiation, repositioning the proposal around long-term value and strategic partnership",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A key internal stakeholder is not supporting the proposal effort. How do you get buy-in?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Proceed without their input",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Send an email explaining the importance of their contribution",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Hold a targeted stakeholder engagement session, address their concerns, and integrate their input into the proposal",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic stakeholder alignment process and develop a proposal sponsorship governance model",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you communicate a complex technical proposal to a non-technical client?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Share the technical document and offer to answer questions",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Summarise the key points in a covering letter",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop an executive summary with visual aids and translate technical content into business outcomes",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design a multi-channel proposal communication strategy addressing all stakeholder personas",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4.4",
+          "name": "Proposal Optimization & Governance Strategy",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Your organisation has no standard proposal process. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Create a template for your own team",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share best practices with colleagues informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design and implement a proposal governance framework with stage gates, quality reviews, and role assignments",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise proposal management transformation, defining standards, tools, and capability programmes",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A proposal is submitted without a proper internal review. How do you prevent this happening again?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Issue a reminder to the team",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Add a review step to the next proposal",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a formal proposal review gate process with defined reviewers, checklists, and sign-off authority",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Redesign the full proposal governance policy and drive its adoption across the organisation",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure proposals reflect corporate values and brand standards?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Leave it to the marketing team",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Add a standard company profile section to every proposal",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a proposal style guide aligned to brand standards and conduct regular compliance reviews",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the integration of corporate identity, ESG commitments, and strategic narrative into all proposals at organisational level",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4.5",
+          "name": "Proposal Excellence & Impact",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "What makes a proposal stand out from competitors?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "A low price",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Meeting all RFP requirements",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Clearly articulating differentiated value, risk mitigation, and a compelling delivery methodology",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Positioning the proposal as a strategic partnership opportunity with a forward-looking innovation narrative",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A major proposal was lost to a competitor. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Move on to the next opportunity",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Request debrief notes from the client",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a structured post-bid analysis and update the proposal library with improvement actions",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic bid intelligence review, benchmark against competitors, and redesign the proposal approach",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure a proposal delivers measurable business impact if won?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Focus on winning; delivery concerns come later",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Include a delivery plan and key milestones",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a benefits realisation plan within the proposal, linked to measurable KPIs and client success criteria",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Embed strategic impact frameworks demonstrating long-term ROI and organisational transformation potential",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5",
+      "name": "Resource Management & Budget Control",
+      "sequence": 5,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "5.1",
+          "name": "Enterprise Budgeting & Resource Optimization",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "You are preparing the project budget for a complex initiative. What is your approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Estimate costs based on previous projects",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Use a top-down estimate approved by the sponsor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a bottom-up cost estimate with contingency reserves and validate with subject matter experts",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build a comprehensive resource-loaded financial model with risk-adjusted contingencies and portfolio funding alignment",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Your project is at 60% complete but has consumed 80% of the budget. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue and hope the remaining work costs less",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Report the overrun and request more budget",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct an Earned Value Analysis, forecast the final cost, identify variance causes, and present corrective options",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a project financial recovery programme and present strategic options to the executive board",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "Resources are shared across multiple projects. How do you ensure your project gets what it needs?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Request resources early and hope for the best",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Escalate resource conflicts to senior management",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Maintain a resource plan and negotiate allocations through formal portfolio resource management",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise resource optimisation, designing a portfolio capacity model that balances demand across all projects",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5.2",
+          "name": "Financial Compliance & Resource Governance",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "You discover a team member has been charging time to the wrong project code. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Let it go if the amounts are small",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Correct the allocation quietly in the system",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Investigate the cause, correct allocations, document the incident, and implement a control to prevent recurrence",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a financial governance audit across all projects and redesign time-charging controls and accountability processes",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A budget holder approves an expenditure outside project scope. How do you handle it?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Process it to avoid a conflict",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Flag it to the budget holder informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Reject it formally, document the decision, and escalate through the project's financial governance framework",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a project financial controls review and strengthen scope-to-spend governance across the programme",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure project financial reports are accurate and meet compliance requirements?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Rely on the finance team to validate",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review reports before submission and correct obvious errors",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a financial reporting checklist, validate against project actuals, and obtain sign-off from the finance controller",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design and own a project financial compliance framework aligned to corporate audit requirements",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5.3",
+          "name": "Financial Automation & Optimization",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Your project finance tracking is done manually via spreadsheets. What do you propose?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue as is; it works well enough",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Suggest the team move to a shared spreadsheet",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Propose and implement a project management information system with automated financial tracking and reporting",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a digital finance transformation integrating project cost management with ERP and real-time analytics",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you use data analytics to improve budget management?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I do not use analytics; I rely on experience",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review monthly financial summaries",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Use trend analysis and EVM metrics to forecast project financial performance and identify optimisation opportunities",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build predictive financial models and lead the organisation's adoption of AI-powered project financial analytics",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A new financial management tool is being rolled out. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait until it is mandatory before adopting it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Attend the training and implement for my project",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Champion the tool adoption, train the team, customise for project needs, and contribute to tool improvement feedback",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the enterprise rollout, design the change management approach, and coach project managers organisation-wide",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5.4",
+          "name": "Cost Efficiency & Waste Reduction",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "You notice that 20% of project activities are adding no measurable value. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue them in case they add value later",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the concern at the next project meeting",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a value engineering review, eliminate non-value-adding activities, and re-deploy resources to priority work",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a lean project management transformation redesigning workflows to maximise value delivery across the portfolio",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A vendor's invoice includes charges you believe are duplicated. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Pay it to maintain the relationship",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask the vendor to explain",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a detailed invoice audit against contract terms, reject duplicates, and negotiate a credit",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Implement a systematic vendor invoice assurance process across all contracts to prevent duplicate billing",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you identify and implement cost savings without compromising project quality?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Cut the smallest budget lines first",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Negotiate with vendors for better rates",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a structured cost-benefit analysis of all project workstreams and implement targeted efficiency measures",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic cost transformation programme balancing savings with quality assurance and long-term value",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5.5",
+          "name": "Budget Variance Analysis & Optimization",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "The project is showing a Schedule Variance (SV) of -15%. How do you interpret and act on this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "It means the project is behind on cost",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "It means the project is behind on schedule; I will monitor it",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "It indicates schedule slippage; I will perform root cause analysis and propose a recovery plan with updated forecasts",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I use SV alongside CPI, SPI, and EAC to build a comprehensive performance recovery dashboard for executive review",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "At month 4 of 10, actual cost is 10% above the planned value. How do you forecast the final cost?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Assume the overrun will not continue",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Add 10% to the original total budget",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Calculate EAC using EVM formulas and present multiple forecast scenarios",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build a probabilistic cost forecast with confidence intervals and present scenario analysis to the board",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you communicate a significant budget variance to senior leadership?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Email the updated figures with no commentary",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Present the numbers at the next steering committee",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Prepare a structured variance report with root causes, revised forecast, corrective actions, and recommended decisions",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a financial performance review with scenario modelling, strategic recommendations, and a governance action plan",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5.6",
+          "name": "Financial Governance & Resource Optimization",
+          "sequence": 6,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you establish financial governance at the start of a project?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Set up a shared spreadsheet for cost tracking",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Define a budget with approval thresholds and assign a finance point of contact",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design a financial governance framework with approval authorities, reporting standards, and audit trails",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise financial governance design integrating project controls into corporate treasury and audit frameworks",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A project team requests budget for an activity not in the approved scope. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Approve it from contingency without formal process",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Reject it until a scope change is approved",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Follow the change control process, assess the request, and approve or reject through the governance structure",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a scope and financial governance review, strengthening the change control framework for the project",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure resources are used optimally across a programme of projects?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Each project manager manages their own resources",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review resource usage in programme steering meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a resource management system with utilisation tracking, forecasting, and reallocation processes",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design an enterprise resource optimisation strategy that balances supply and demand across the full project portfolio",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "6",
+      "name": "Digital Pm & Technology Innovation",
+      "sequence": 6,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "6.1",
+          "name": "Project Management System Optimization",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "The team is using multiple disconnected tools for project tracking. What do you propose?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue with current tools; integration is too complex",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Suggest one team consolidates onto a shared spreadsheet",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Assess current tools, define requirements, and lead the adoption of an integrated project management platform",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise PM technology strategy, selecting, implementing, and governing tools at portfolio level",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Project status reports are inconsistent across the team. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept variation since teams work differently",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share a status report template for the team to use",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design standardised reporting templates, train the team, and implement a reporting governance process",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a digital project reporting transformation, automating status generation through integrated PM systems",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A new project management platform is being evaluated for the organisation. How do you contribute?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait to see which system is chosen",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Provide feedback based on my own experience",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Lead the requirements gathering, participate in system evaluation, and pilot the platform with my team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Own the enterprise PM technology evaluation process and drive adoption organisation-wide",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "6.2",
+          "name": "AI-Driven Digital Efficiency & Automation",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Repetitive project reporting tasks are consuming significant team time. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept it as part of the job",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Create a reporting template to speed up the process",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Identify automation opportunities using available tools and implement solutions",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a digital workflow transformation using AI-driven automation to eliminate manual reporting across the programme",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "AI tools are being introduced in project scheduling. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Avoid them until they are proven",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Attend a training session and experiment with the tools",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a pilot implementation plan, evaluate performance, and recommend an adoption path",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the organisation's AI-augmented PM strategy defining governance, training, and change management",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you use data to drive efficiency improvements in project delivery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I rely on experience rather than data",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review project data in retrospectives",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement data-driven performance metrics, build dashboards, and use insights to drive continuous improvement",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an organisational analytics capability using AI and machine learning to predict performance and optimise delivery",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "6.3",
+          "name": "AI-Driven ERP Transformation",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Your organisation is implementing an ERP system that affects project workflows. What is your role?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait for IT to implement it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Attend demos and provide feedback",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Actively participate in the ERP rollout, define PM requirements, and lead change management for your team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the ERP transformation programme, aligning PM workflows and driving adoption at enterprise level",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "The ERP system is causing delays in project reporting due to poor configuration. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Revert to spreadsheets until it is fixed",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the issue with IT",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Document configuration gaps, propose solutions, and work with IT to implement fixes with minimal disruption",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a systems improvement initiative, redesign ERP-PM integration architecture, and drive resolution at executive level",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure project teams are effective after a major digital transformation?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Let the team adapt on their own",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Organise training sessions on the new system",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design a comprehensive change management and capability development plan, measure adoption, and support the team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise change readiness and transformation capability development across the PM function",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "6.4",
+          "name": "IT Enablement & Digital Innovation",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you leverage technology to improve stakeholder communication on your project?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Send email updates",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Set up a shared drive for project documents",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a stakeholder portal or collaboration platform with role-based access and automated notifications",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design an integrated digital stakeholder engagement strategy with analytics and personalised dashboards",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A new digital tool could improve project delivery significantly but requires change. How do you approach adoption?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait for leadership to mandate it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Pilot it with a willing team member",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a business case, pilot systematically, measure outcomes, and recommend full adoption through governance",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the innovation adoption programme, driving digital transformation across the PM function",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you stay current with digital trends relevant to project management?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I focus on delivery; digital trends are the IT team's concern",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Read articles occasionally and attend webinars",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Maintain a structured learning plan, attend industry conferences, and apply emerging practices to my projects",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead organisational digital intelligence, publishing thought leadership and driving the PM function's innovation agenda",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "6.5",
+          "name": "IT Troubleshooting & Intelligent Automation",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A project management tool crashes repeatedly, impacting project tracking. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Revert to manual methods",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Log a help desk ticket and wait",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Diagnose the issue, implement a workaround, escalate with a documented business impact, and follow up until resolved",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a systems resilience review and drive a long-term digital infrastructure improvement plan",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you automate repetitive administrative tasks in project delivery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I do not have time to explore automation",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Use copy-paste templates",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Identify high-volume repetitive tasks, apply automation tools (macros, RPA, workflow automation), and measure time savings",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead intelligent automation adoption across the PM function using AI-driven tools to eliminate waste at scale",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you troubleshoot a data discrepancy in your project management system?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use whichever figure seems most reasonable",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask IT to check the system",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Trace the data back to source systems, identify the discrepancy cause, correct it, and implement validation controls",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a data governance review, redesign data integrity frameworks, and implement automated validation across PM systems",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "6.6",
+          "name": "IT Optimization & Automation Strategy",
+          "sequence": 6,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you build a case for investing in new PM technology?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Request it informally from IT",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Identify the need and ask leadership for approval",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a business case with ROI analysis, implementation plan, and risk assessment for leadership approval",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic technology investment review aligning PM technology roadmap to enterprise digital strategy",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Your organisation has multiple outdated PM tools. How do you rationalise the technology landscape?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use what works for each project",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Recommend replacing one tool at a time",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a technology audit, develop a rationalisation roadmap, and lead a phased migration to optimised tools",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise PM technology strategy governing the full technology portfolio and driving optimisation at scale",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you ensure PM technology delivers lasting business value?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Once implemented, technology manages itself",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review usage data occasionally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement usage monitoring, benefits tracking, and continuous improvement cycles for all PM technologies",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design and own a PM technology value management framework presenting outcomes to the executive board",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "7",
+      "name": "Operations & Sustainability Management",
+      "sequence": 7,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "7.1",
+          "name": "Outsourced Maintenance & Sustainability Optimization",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "A maintenance contractor is not meeting service levels. What is your response?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Warn them informally and monitor",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Issue a formal notice referencing the contract",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a service performance review, invoke SLA remedies, implement an improvement plan, and escalate if unresolved",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic outsourcing review and redesign the maintenance governance model",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you integrate sustainability into outsourced maintenance contracts?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Sustainability is not relevant to maintenance contracts",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask contractors about their sustainability policies",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Include sustainability KPIs in contract specifications and monitor compliance through regular audits",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a sustainable procurement strategy embedding ESG requirements across all vendor contracts and supply chains",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "An asset under project management has been poorly maintained by a third party, increasing project risk. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Document the issue and continue",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Request the contractor fix the problem",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct an asset risk assessment, invoke contractual obligations, and develop a remediation plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a comprehensive asset management review integrating maintenance performance into project risk governance",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7.2",
+          "name": "Sustainability Integration & Compliance",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 1,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you integrate environmental sustainability into project planning?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Sustainability is managed by the HSE team; I focus on delivery",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Include a sustainability section in the project plan",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a project sustainability plan with measurable targets, embed it into the schedule, and track against KPIs",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the organisation's sustainable project delivery framework linking outcomes to corporate ESG strategy",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A project activity is found to be non-compliant with environmental regulations. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue and address it after delivery",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Pause the activity and notify the client",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Stop the activity immediately, investigate, notify all relevant parties, and develop a compliance remediation plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a sustainability compliance emergency response and strengthen compliance governance across the programme",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you measure the sustainability performance of your project?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I do not currently measure sustainability",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Include carbon footprint data in the project report",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Define sustainability KPIs at project outset, collect data regularly, and report against targets in governance reviews",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the development of an organisational project sustainability scorecard aligned to global ESG frameworks",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7.3",
+          "name": "Vendor Governance & Sustainability Compliance",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you assess a new vendor's sustainability credentials before awarding a contract?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Focus on cost and capability; sustainability is secondary",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review the vendor's website for sustainability statements",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a formal vendor sustainability assessment using a structured questionnaire and evaluate against defined criteria",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a sustainable supply chain governance programme with third-party audits, ESG scoring, and board-level reporting",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A vendor is found to have poor labour practices in their supply chain. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Continue the contract if they are performing well",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the concern with the vendor informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Formally investigate, apply contractual remedies related to ethical standards, and escalate to the procurement team",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an ethical supply chain review, strengthen vendor conduct requirements, and present findings to the ethics committee",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you monitor vendor compliance with sustainability commitments throughout a contract?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Review at contract close",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask vendors to self-report",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a vendor compliance tracker with regular audits, data verification, and contractual remedies for non-compliance",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Design an enterprise vendor sustainability monitoring system with real-time dashboards and automated compliance alerts",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7.4",
+          "name": "Sustainable Outsourcing & Digital Efficiency",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you reduce the environmental footprint of project operations?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Sustainability improvements are not within my project scope",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Encourage the team to reduce paper use",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a project environmental management plan with targeted reduction measures and digital alternatives",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a project sustainability transformation, achieving measurable carbon reduction and presenting outcomes to the board",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Digitalising a project process could eliminate unnecessary travel and reduce costs. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Keep current processes; change is disruptive",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Suggest the idea informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a business case for the digital process, pilot it, measure outcomes, and recommend full adoption",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a digital sustainability initiative redesigning processes organisation-wide to reduce environmental impact",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "An outsourced service has been identified as a significant carbon emitter. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept it as an industry norm",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Raise the concern with the vendor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a carbon impact assessment, explore low-emission alternatives, and negotiate a sustainability improvement plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic decarbonisation initiative for the outsourced service aligning to net-zero commitments",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7.5",
+          "name": "Sustainable Vendor Management & Innovation",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you encourage vendors to innovate in sustainability practices?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "It is not my responsibility to manage vendor sustainability",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share sustainability goals with the vendor at contract kick-off",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Include innovation clauses in contracts, facilitate joint sustainability workshops, and recognise high-performing vendors",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a vendor sustainability partnership programme co-creating innovation roadmaps and presenting at industry forums",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A vendor proposes a more sustainable method that adds 5% to cost. How do you evaluate this?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Reject it; stay on budget",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Present it to the sponsor without recommendation",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a cost-benefit analysis including sustainability and long-term value, and present a balanced recommendation",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic sustainability value assessment aligning the decision to corporate ESG goals and long-term ROI",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you build long-term sustainable value from vendor relationships?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Focus on short-term delivery and cost",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Maintain good communication and renew contracts with good vendors",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Develop a strategic vendor partnership framework with shared sustainability goals and joint reviews",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead enterprise strategic sourcing designing vendor ecosystems that deliver systemic sustainability value",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7.6",
+          "name": "Maintenance & Vendor Excellence",
+          "sequence": 6,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you ensure value for money from maintenance contracts?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Compare annual invoices to budget",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Review performance once a year",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a structured vendor performance management system with KPIs, regular reviews, and benchmarking",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a total cost of ownership analysis across all maintenance contracts and drive strategic value improvements",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A maintenance contract is due for renewal. What is your approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Renew with the same terms",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Negotiate a small discount with the current vendor",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a market benchmarking exercise, evaluate alternatives, and negotiate improved terms or re-tender",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic sourcing review, align the new contract to operational and sustainability strategy, and engage the board",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you drive continuous improvement in vendor performance?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Address issues when they arise",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Conduct an annual vendor review",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a vendor development programme with quarterly reviews, improvement targets, and incentives",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a strategic vendor excellence programme that benchmarks against world-class standards",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "8",
+      "name": "Professional Certifications",
+      "sequence": 8,
+      "weight": 1.0,
+      "subCompetencies": [
+        {
+          "code": "8.1",
+          "name": "Certification Progression & Expertise",
+          "sequence": 1,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Your organisation values professional certifications for PM roles. What is your current approach?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I have not pursued any certifications",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I plan to pursue a certification in the next 2 years",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I hold a relevant certification (e.g. PMP, PRINCE2) and actively apply the knowledge in my role",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I hold multiple advanced certifications, mentor colleagues, and contribute to PM standards bodies",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A new certification relevant to your role has just been accredited. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Ignore it for now",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Research it and add it to my future development plans",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Evaluate its relevance, discuss with my line manager, and pursue it within the current PDR cycle",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the organisation's adoption of the certification and create an internal training pathway",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you apply knowledge from professional certifications to your daily work?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "The certification knowledge and day-to-day work are largely separate",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I occasionally reference certification materials",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I systematically apply certification frameworks and tools to all projects and adapt them to organisational context",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I champion certified best practice across the PM function and contribute to methodology development",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8.2",
+          "name": "Certification-Driven Project Excellence & Leadership",
+          "sequence": 2,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How does your professional certification improve project outcomes?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "It does not directly improve outcomes; it is mainly a credential",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "It gives me confidence and a structured approach",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I directly apply certification methodologies to improve planning, governance, risk, and stakeholder management",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I lead the transformation of PM delivery quality using certification-based excellence frameworks",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A project is struggling with poor governance. How do you apply your PM certification knowledge?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "The project was planned before I was involved; I cannot change it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share relevant certification frameworks with the team informally",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a project health check using certified governance standards and implement a structured improvement plan",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a programme-wide governance redesign using advanced certification frameworks and present a maturity roadmap",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "You are leading a project in a new sector. How does your certification help?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Certifications are general; sector knowledge matters more",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I apply basic certified PM principles while learning the sector",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I adapt certified PM methodologies to sector-specific requirements and seek expert input to close knowledge gaps",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I bring deep certified PM expertise, mentor sector specialists, and elevate overall delivery quality",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8.3",
+          "name": "Certification-Based Leadership & Compliance Strategy",
+          "sequence": 3,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you use your PM certification to ensure regulatory compliance on projects?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Compliance is a legal/HSE matter; my certification is project-focused",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I reference compliance requirements when planning",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I integrate compliance into the certified PM framework, building it into governance and risk processes",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I lead compliance excellence across the PM function, aligning regulatory requirements to certified standards",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "A team member questions the value of formal PM certifications. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Agree that experience is more valuable",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Explain the career benefits of certification",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Demonstrate with evidence how certification has improved project outcomes and share learning resources",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a capability development strategy that quantifies the ROI of certification and embeds it in the talent framework",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you keep your PM certification knowledge current?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "I completed the certification and have not revisited it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "I renew my CPD points as required",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "I actively pursue continuing education, attend industry events, and apply new learning to my practice",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "I lead the organisation's PM knowledge management programme curating and sharing best practices",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8.4",
+          "name": "Certification-Based Governance & Transformation",
+          "sequence": 4,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 2,
+            "Head": 4,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "Your organisation's PM governance is informal and inconsistent. How do you improve it using certification knowledge?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Governance is leadership's responsibility",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share certified governance frameworks with relevant team members",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a governance maturity assessment, design improvements, and implement with leadership buy-in",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise PM governance transformation programme and present to the board",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "How do you develop PM governance maturity in your organisation?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Let it develop organically through project experience",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Recommend PM training to team members",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Conduct a PM maturity assessment, design a roadmap, and implement improvements aligned to certification standards",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an organisational PM transformation, establishing a PMO using certified best practices",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "A digital transformation project requires updated PM methodologies. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Apply existing PM methods as they are",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Research agile or hybrid approaches and share with the team",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Evaluate agile/hybrid certified frameworks, design an appropriate methodology, and pilot on the project",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the enterprise adoption of certified agile/hybrid PM methods and govern the transition",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8.5",
+          "name": "Certification-Driven Leadership & Continuous Learning",
+          "sequence": 5,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you build a learning culture within your project team?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Learning happens naturally through project experience",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share articles and encourage reading",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design team learning plans, facilitate knowledge-sharing sessions, and link learning to project performance",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an organisational learning and development strategy for the PM function",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "You identify a skills gap in your team that is affecting delivery. What do you do?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Accept the limitation and work around it",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Encourage the team member to self-develop",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Design a targeted development plan with certified training, mentoring, and performance milestones",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a PM capability development programme addressing systemic skills gaps using certification pathways",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you use lessons learned from projects to improve future delivery?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Document them at project close and file them away",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share lessons in team meetings",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Implement a structured lessons-learned process linked to a knowledge base and integrate findings into future project plans",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead a PM knowledge management system turning lessons into organisational intellectual capital and published standards",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8.6",
+          "name": "Certification-Driven Leadership & Strategic Alignment",
+          "sequence": 6,
+          "requiredLevels": {
+            "IC/DM": 3,
+            "Manager": 4,
+            "Head": 5,
+            "Chief": 5
+          },
+          "questions": [
+            {
+              "sequence": 1,
+              "text": "How do you align PM certification standards to organisational strategy?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Certification knowledge and organisational strategy are separate domains",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Mention strategic alignment in project documentation",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Map PM certification frameworks to strategic objectives and use them to design governance that delivers strategic value",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead the design of a PM strategy framework embedding certified best practice into corporate strategy execution",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 2,
+              "text": "Leadership wants to understand the ROI of investing in PM certifications. How do you respond?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Certifications improve morale; ROI is hard to quantify",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Share industry data on the value of PM certification",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Build a business case with data on delivery improvement, cost avoidance, and risk reduction linked to certified capability",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Lead an enterprise capability ROI study presenting investment value to the board with strategic recommendations",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "sequence": 3,
+              "text": "How do you use PM certification expertise to drive competitive advantage?",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Certifications are personal credentials; competitive advantage comes from elsewhere",
+                  "score": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Reference certifications in bids and client proposals",
+                  "score": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Leverage certified PM expertise to differentiate project delivery quality and win new business",
+                  "score": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build a certified PM centre of excellence positioning the organisation as an industry leader in project delivery",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
