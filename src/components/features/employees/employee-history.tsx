@@ -11,6 +11,14 @@ const TL_STYLES: Record<string, string> = {
   critical: "bg-gap-critical/10 text-gap-critical",
 };
 
+const STATUS_LABEL: Record<string, string> = {
+  not_assigned: "Not assigned",
+  sent: "Awaiting self-assessment",
+  self_done: "Awaiting manager rating",
+  scored: "Scored",
+  finalized: "Finalized",
+};
+
 function shortDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -97,13 +105,19 @@ export function EmployeeHistory({ entries }: { entries: EmployeeHistoryEntry[] }
                       {e.trafficLight.replace("_", " ")}
                     </span>
                   ) : (
-                    <span className="text-xs text-text-tertiary">
-                      {e.status.replace("_", " ")}
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                        e.isPreview
+                          ? "bg-gap-developing/10 text-gap-developing"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      {STATUS_LABEL[e.status] ?? e.status.replace("_", " ")}
                     </span>
                   )}
                 </td>
                 <td className="px-3 py-2 text-right">
-                  {e.managerLevel !== null && (
+                  {e.selfLevel !== null && (
                     <Link
                       href={`/results/${e.assessmentId}`}
                       className="text-sm text-primary hover:underline"

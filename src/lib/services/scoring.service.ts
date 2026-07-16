@@ -22,7 +22,10 @@ import {
   getCalibrationFlag,
 } from "@/lib/domain/scoring/calibration";
 import type { Question } from "@/lib/domain/types/framework.types";
-import type { AssessmentResult } from "@/lib/domain/types/assessment.types";
+import type {
+  Assessment,
+  AssessmentResult,
+} from "@/lib/domain/types/assessment.types";
 import {
   CALIBRATION_FLAG,
   FINAL_STATUS,
@@ -32,6 +35,8 @@ import {
 import { NotFoundError } from "@/lib/utils/errors";
 
 export interface ResultRow {
+  subCompetencyId: string;
+  areaId: string;
   subCode: string;
   subName: string;
   selfLevel: number | null;
@@ -43,17 +48,15 @@ export interface ResultRow {
   calibrationFlag: CalibrationFlag | null;
 }
 
-export const scoringService = {
-  /**
-   * Compute per-sub-competency results for one assessment and persist them to
-   * `assessmentResults`. Recomputes idempotently (clears prior rows first).
-   * Sets the assessment's finalStatus and refreshes campaign stats.
-   */
-  async computeResults(assessmentId: ObjectId): Promise<ResultRow[]> {
-    const assessment = await assessmentRepo.findById(assessmentId);
-    if (!assessment) throw new NotFoundError("Assessment");
-
-    const employee = await userRepo.findById(assessment.employeeId);
+/**
+ * Pure(ish) row builder shared by the persisted compute path and the
+ * read-only preview path. Works whether or not the manager has rated yet —
+ * `managerLevel`/`gap`/etc. simply come back null until they have.
+ */
+async function buildRows(
+  assessment: Assessment,
+): Promise<{ rows: ResultRow[]; docs: Omit<AssessmentResult, "_id">[] }> {
+  const employee = await userRepo.findById(assessment.employeeId);
     const thresholds = await settingsService.getThresholds();
     const jobFamilyId = assessment.jobFamilyAtCampaign;
     const designation = assessment.designationAtCampaign;
@@ -157,6 +160,8 @@ export const scoringService = {
           : null;
 
       rows.push({
+        subCompetencyId: subKey,
+        areaId: sub.areaId.toString(),
         subCode: sub.code,
         subName: sub.name,
         selfLevel,
@@ -195,6 +200,22 @@ export const scoringService = {
       });
     }
 
+    return { rows, docs };
+}
+
+export const scoringService = {
+  /**
+   * Compute per-sub-competency results for one assessment and persist them to
+   * `assessmentResults`. Recomputes idempotently (clears prior rows first).
+   * Sets the assessment's finalStatus and refreshes campaign stats. Call only
+   * once both sides have submitted (see assessmentService.maybeCompute).
+   */
+  async computeResults(assessmentId: ObjectId): Promise<ResultRow[]> {
+    const assessment = await assessmentRepo.findById(assessmentId);
+    if (!assessment) throw new NotFoundError("Assessment");
+
+    const { rows, docs } = await buildRows(assessment);
+
     await assessmentResultRepo.deleteByAssessment(assessment._id);
     await assessmentResultRepo.insertMany(docs);
 
@@ -212,6 +233,19 @@ export const scoringService = {
 
     await this.refreshCampaignStats(assessment.campaignId);
 
+    return rows;
+  },
+
+  /**
+   * Read-only, non-persisting preview of the same rows — usable at any point
+   * in the flow (self-only, manager-only, or both) so HR can see a
+   * self-assessment's levels before the manager has rated. Never touches
+   * `assessmentResults` or `finalStatus`.
+   */
+  async previewRows(assessmentId: ObjectId): Promise<ResultRow[]> {
+    const assessment = await assessmentRepo.findById(assessmentId);
+    if (!assessment) throw new NotFoundError("Assessment");
+    const { rows } = await buildRows(assessment);
     return rows;
   },
 

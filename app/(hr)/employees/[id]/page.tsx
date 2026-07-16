@@ -130,21 +130,26 @@ export default async function EmployeeDashboardPage({
         <div className="rounded-lg border border-dashed border-border bg-surface p-10 text-center text-text-secondary">
           {latest.status === "not_assigned"
             ? "No assessment assigned yet. Send one from the Assessments page."
-            : latest.status === "sent"
-              ? "Waiting for the employee to complete their self-assessment."
-              : "Waiting for the line manager to submit their ratings. Results appear once both sides are in."}
+            : "Waiting for the employee to complete their self-assessment."}
         </div>
       ) : (
         <>
+          {view.isPreview && (
+            <div className="rounded-lg border border-gap-developing/30 bg-gap-developing/10 px-4 py-3 text-sm text-gap-developing">
+              Self-assessment submitted — awaiting manager rating. The
+              numbers below are a live preview from self answers only.
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <KpiCard
-              label="Capability"
+              label={view.isPreview ? "Self capability (preview)" : "Capability"}
               value={view.overall ? `${view.overall.capabilityPercent}%` : "—"}
-              hint="manager vs required"
+              hint={view.isPreview ? "self vs required" : "manager vs required"}
               accent="navy"
             />
             <KpiCard
-              label="Manager level"
+              label={view.isPreview ? "Self level" : "Manager level"}
               value={view.overall ? `${view.overall.managerLevel} / 5` : "—"}
               accent="blue"
             />
@@ -154,7 +159,7 @@ export default async function EmployeeDashboardPage({
               accent="neutral"
             />
             <KpiCard
-              label="Overall gap"
+              label={view.isPreview ? "Gap (preview)" : "Overall gap"}
               value={
                 view.overall
                   ? `${view.overall.gap > 0 ? "+" : ""}${view.overall.gap}`
@@ -165,11 +170,18 @@ export default async function EmployeeDashboardPage({
           </div>
 
           <WidgetGrid>
-            <Widget title="Overall Capability" info="Manager-rated level vs required, across all areas.">
+            <Widget
+              title={view.isPreview ? "Self Capability (preview)" : "Overall Capability"}
+              info={
+                view.isPreview
+                  ? "Self-rated level vs required, across all areas. Updates to the official manager-scored result once rated."
+                  : "Manager-rated level vs required, across all areas."
+              }
+            >
               <div className="flex flex-col items-center gap-3 py-2">
                 <DonutStat
                   value={view.overall?.capabilityPercent ?? 0}
-                  label="Capability"
+                  label={view.isPreview ? "Self capability" : "Capability"}
                 />
                 {view.overall && <TrafficLight status={view.overall.trafficLight} />}
               </div>
@@ -177,15 +189,26 @@ export default async function EmployeeDashboardPage({
 
             <Widget
               title="Competency Radar"
-              info="Manager-rated level vs required across all competency areas (0–5)."
+              info={
+                view.isPreview
+                  ? "Self-rated level vs required across all competency areas (0–5) — preview."
+                  : "Manager-rated level vs required across all competency areas (0–5)."
+              }
               empty={radarData.length === 0}
             >
-              <RadarGapChart data={radarData} />
+              <RadarGapChart
+                data={radarData}
+                seriesLabel={view.isPreview ? "Self level (preview)" : "Manager level"}
+              />
             </Widget>
 
             <Widget
-              title="Gap by Competency Area"
-              info="Required minus manager level per area. Colored by traffic light."
+              title={view.isPreview ? "Gap by Competency Area (preview)" : "Gap by Competency Area"}
+              info={
+                view.isPreview
+                  ? "Required minus self level per area (preview). Colored by traffic light."
+                  : "Required minus manager level per area. Colored by traffic light."
+              }
               className="md:col-span-2 xl:col-span-3"
               empty={areaGapBars.length === 0}
             >

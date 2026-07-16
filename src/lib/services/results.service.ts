@@ -8,6 +8,7 @@ import { competencyAreaRepo } from "@/lib/db/repositories/competency-area.reposi
 import { subCompetencyRepo } from "@/lib/db/repositories/sub-competency.repository";
 import { rollupArea, rollupOverall } from "@/lib/domain/scoring/rollup";
 import { settingsService } from "@/lib/services/settings.service";
+import { scoringService, type ResultRow } from "@/lib/services/scoring.service";
 import type { Assessment } from "@/lib/domain/types/assessment.types";
 import type { TrafficLight, CalibrationFlag } from "@/lib/domain/constants";
 import { STATUS } from "@/lib/domain/constants";
@@ -62,6 +63,8 @@ export interface EmployeeHistoryEntry {
   campaignName: string;
   date: string;
   status: EmployeeAssessmentStatus;
+  /** True while self is done but not yet manager-rated (numbers are a preview). */
+  isPreview: boolean;
   capabilityPercent: number | null;
   selfLevel: number | null;
   managerLevel: number | null;
@@ -73,6 +76,12 @@ export interface EmployeeHistoryEntry {
 export interface AssessmentResultView {
   employee: { name: string; division: string };
   finalStatus: string;
+  /**
+   * True when the manager hasn't rated yet and `overall`/`areas` are a
+   * self-vs-required preview computed live (not the persisted, officially
+   * scored result). The UI should label these as "preview" accordingly.
+   */
+  isPreview: boolean;
   overall: {
     managerLevel: number;
     requiredLevel: number;
@@ -82,6 +91,48 @@ export interface AssessmentResultView {
   } | null;
   areas: AreaSummary[];
   rows: ResultDetailRow[];
+}
+
+/** Shared rollup: sub-competency rows → area summaries → overall. */
+function rollupFromRows(
+  rows: { areaId: string; level: number | null; requiredLevel: number | null }[],
+  areas: { _id: ObjectId; name: string; weight: number }[],
+  gapThresholds: Parameters<typeof rollupArea>[1],
+): { areaSummaries: AreaSummary[]; overall: AssessmentResultView["overall"] } {
+  const byArea = new Map<string, { level: number; req: number }[]>();
+  for (const r of rows) {
+    if (r.level === null || !r.requiredLevel) continue;
+    if (!byArea.has(r.areaId)) byArea.set(r.areaId, []);
+    byArea.get(r.areaId)!.push({ level: r.level, req: r.requiredLevel });
+  }
+
+  const areaSummaries: AreaSummary[] = [];
+  const weightedAreas: { managerLevel: number; requiredLevel: number; weight: number }[] =
+    [];
+
+  for (const area of areas) {
+    const items = byArea.get(area._id.toString());
+    if (!items || items.length === 0) continue;
+    const rollup = rollupArea(
+      items.map((i) => ({ managerLevel: i.level, requiredLevel: i.req })),
+      gapThresholds,
+    );
+    if (!rollup) continue;
+    areaSummaries.push({
+      areaName: area.name,
+      managerLevel: rollup.managerLevel,
+      requiredLevel: rollup.requiredLevel,
+      gap: rollup.gap,
+      trafficLight: rollup.trafficLight,
+    });
+    weightedAreas.push({
+      managerLevel: rollup.managerLevel,
+      requiredLevel: rollup.requiredLevel,
+      weight: area.weight,
+    });
+  }
+
+  return { areaSummaries, overall: rollupOverall(weightedAreas, gapThresholds) };
 }
 
 export const resultsService = {
@@ -109,9 +160,49 @@ export const resultsService = {
     const subMap = new Map(subs.map((s) => [s._id.toString(), s]));
     const areaMap = new Map(areas.map((a) => [a._id.toString(), a]));
 
-    const rows: ResultDetailRow[] = results
+    // No persisted results yet means the manager hasn't rated — fall back to
+    // a live, read-only preview built from self answers + required levels so
+    // the assessment is still meaningful to look at.
+    const isPreview = results.length === 0;
+    const source: {
+      subCompetencyId: string;
+      areaId: string;
+      selfLevel: number | null;
+      managerLevel: number | null;
+      requiredLevel: number | null;
+      gap: number | null;
+      trafficLight: TrafficLight | null;
+      difference: number | null;
+      calibrationFlag: CalibrationFlag | null;
+    }[] = isPreview
+      ? await scoringService.previewRows(assessmentId).then((rows: ResultRow[]) =>
+          rows.map((r) => ({
+            subCompetencyId: r.subCompetencyId,
+            areaId: r.areaId,
+            selfLevel: r.selfLevel,
+            managerLevel: r.managerLevel,
+            requiredLevel: r.requiredLevel,
+            gap: r.gap,
+            trafficLight: r.trafficLight,
+            difference: r.difference,
+            calibrationFlag: r.calibrationFlag,
+          })),
+        )
+      : results.map((r) => ({
+          subCompetencyId: r.subCompetencyId.toString(),
+          areaId: subMap.get(r.subCompetencyId.toString())?.areaId.toString() ?? "",
+          selfLevel: r.selfLevel,
+          managerLevel: r.managerLevel,
+          requiredLevel: r.requiredLevel || null,
+          gap: r.gap,
+          trafficLight: r.trafficLight,
+          difference: r.difference,
+          calibrationFlag: r.calibrationFlag,
+        }));
+
+    const rows: ResultDetailRow[] = source
       .map((r) => {
-        const sub = subMap.get(r.subCompetencyId.toString());
+        const sub = subMap.get(r.subCompetencyId);
         const area = sub ? areaMap.get(sub.areaId.toString()) : undefined;
         return {
           subCode: sub?.code ?? "?",
@@ -119,7 +210,7 @@ export const resultsService = {
           areaName: area?.name ?? "Unknown",
           selfLevel: r.selfLevel,
           managerLevel: r.managerLevel,
-          requiredLevel: r.requiredLevel || null,
+          requiredLevel: r.requiredLevel,
           gap: r.gap,
           trafficLight: r.trafficLight,
           difference: r.difference,
@@ -128,48 +219,17 @@ export const resultsService = {
       })
       .sort((a, b) => a.subCode.localeCompare(b.subCode, undefined, { numeric: true }));
 
-    // Area rollups
-    const byArea = new Map<string, { mgr: number; req: number }[]>();
-    for (const r of results) {
-      const sub = subMap.get(r.subCompetencyId.toString());
-      if (!sub || r.managerLevel === null || !r.requiredLevel) continue;
-      const key = sub.areaId.toString();
-      if (!byArea.has(key)) byArea.set(key, []);
-      byArea
-        .get(key)!
-        .push({ mgr: r.managerLevel, req: r.requiredLevel });
-    }
-
-    const areaSummaries: AreaSummary[] = [];
-    const weightedAreas: {
-      managerLevel: number;
-      requiredLevel: number;
-      weight: number;
-    }[] = [];
-
-    for (const area of areas) {
-      const items = byArea.get(area._id.toString());
-      if (!items || items.length === 0) continue;
-      const rollup = rollupArea(
-        items.map((i) => ({ managerLevel: i.mgr, requiredLevel: i.req })),
-        gapThresholds,
-      );
-      if (!rollup) continue;
-      areaSummaries.push({
-        areaName: area.name,
-        managerLevel: rollup.managerLevel,
-        requiredLevel: rollup.requiredLevel,
-        gap: rollup.gap,
-        trafficLight: rollup.trafficLight,
-      });
-      weightedAreas.push({
-        managerLevel: rollup.managerLevel,
-        requiredLevel: rollup.requiredLevel,
-        weight: area.weight,
-      });
-    }
-
-    const overall = rollupOverall(weightedAreas, gapThresholds);
+    // In preview mode (no manager yet) roll up self-vs-required instead of
+    // manager-vs-required, so there's still a meaningful overall/area summary.
+    const { areaSummaries, overall } = rollupFromRows(
+      source.map((r) => ({
+        areaId: r.areaId,
+        level: isPreview ? r.selfLevel : r.managerLevel,
+        requiredLevel: r.requiredLevel,
+      })),
+      areas,
+      gapThresholds,
+    );
 
     return {
       employee: {
@@ -177,6 +237,7 @@ export const resultsService = {
         division: employee?.division ?? "",
       },
       finalStatus: assessment.finalStatus,
+      isPreview,
       overall,
       areas: areaSummaries,
       rows,
@@ -246,9 +307,10 @@ export const resultsService = {
       };
     }
     const status = deriveStatus(a);
+    // Self-only assessments still get a view — getAssessmentResultView falls
+    // back to a live self-vs-required preview when the manager hasn't rated.
     const view =
-      a.selfAssessment.status === STATUS.SUBMITTED &&
-      a.managerAssessment.status === STATUS.SUBMITTED
+      a.selfAssessment.status === STATUS.SUBMITTED
         ? await this.getAssessmentResultView(a._id)
         : null;
     return {
@@ -284,9 +346,6 @@ export const resultsService = {
     const entries: EmployeeHistoryEntry[] = [];
     for (const a of assessments) {
       const status = deriveStatus(a);
-      const bothIn =
-        a.selfAssessment.status === STATUS.SUBMITTED &&
-        a.managerAssessment.status === STATUS.SUBMITTED;
       let capabilityPercent: number | null = null;
       let managerLevel: number | null = null;
       let selfLevel: number | null = null;
@@ -294,15 +353,11 @@ export const resultsService = {
       let gap: number | null = null;
       let trafficLight: TrafficLight | null = null;
 
-      if (bothIn) {
+      // Self submitted (with or without a manager rating yet) — always show
+      // the self level and required level; getAssessmentResultView falls
+      // back to a live preview when the manager hasn't rated.
+      if (a.selfAssessment.status === STATUS.SUBMITTED) {
         const view = await this.getAssessmentResultView(a._id);
-        if (view.overall) {
-          capabilityPercent = view.overall.capabilityPercent;
-          managerLevel = view.overall.managerLevel;
-          requiredLevel = view.overall.requiredLevel;
-          gap = view.overall.gap;
-          trafficLight = view.overall.trafficLight;
-        }
         const selfs = view.rows
           .map((r) => r.selfLevel)
           .filter((v): v is number => v !== null);
@@ -310,6 +365,17 @@ export const resultsService = {
           selfLevel =
             Math.round((selfs.reduce((s, v) => s + v, 0) / selfs.length) * 100) /
             100;
+        }
+        if (!view.isPreview && view.overall) {
+          capabilityPercent = view.overall.capabilityPercent;
+          managerLevel = view.overall.managerLevel;
+          requiredLevel = view.overall.requiredLevel;
+          gap = view.overall.gap;
+          trafficLight = view.overall.trafficLight;
+        } else if (view.overall) {
+          // Preview overall is self-vs-required; surface required only (no
+          // manager number exists yet — leave managerLevel/gap/capability null).
+          requiredLevel = view.overall.requiredLevel;
         }
       }
 
@@ -324,6 +390,7 @@ export const resultsService = {
         campaignName: campaignName.get(a.campaignId.toString()) ?? "Assessment",
         date: new Date(date).toISOString(),
         status,
+        isPreview: status === "self_done",
         capabilityPercent,
         selfLevel,
         managerLevel,

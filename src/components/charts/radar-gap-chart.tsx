@@ -22,6 +22,8 @@ export interface RadarDatum {
 export interface RadarGapChartProps {
   data: RadarDatum[];
   height?: number;
+  /** Override the "Manager level" series label (e.g. for a self-only preview). */
+  seriesLabel?: string;
 }
 
 /**
@@ -29,7 +31,11 @@ export interface RadarGapChartProps {
  * axis on a 0–5 scale, with the manager-rated level overlaid on the required
  * level so gaps are visible at a glance. Serializable props only (RSC-safe).
  */
-export function RadarGapChart({ data, height = 320 }: RadarGapChartProps) {
+export function RadarGapChart({
+  data,
+  height = 320,
+  seriesLabel = "Manager level",
+}: RadarGapChartProps) {
   return (
     <ResponsiveContainer width="100%" height={height}>
       <RadarChart data={data} outerRadius="72%">
@@ -53,7 +59,7 @@ export function RadarGapChart({ data, height = 320 }: RadarGapChartProps) {
           isAnimationActive={false}
         />
         <Radar
-          name="Manager level"
+          name={seriesLabel}
           dataKey="manager"
           stroke={ACCENT}
           fill={ACCENT}

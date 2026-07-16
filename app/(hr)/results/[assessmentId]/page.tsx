@@ -43,23 +43,33 @@ export default async function ResultDetailPage({
         </div>
       </div>
 
+      {view.isPreview && (
+        <div className="rounded-lg border border-gap-developing/30 bg-gap-developing/10 px-4 py-3 text-sm text-gap-developing">
+          Awaiting manager rating — the numbers below are a live preview from
+          the employee&apos;s self-assessment only. They&apos;ll be replaced by
+          the official scored result once the manager rates.
+        </div>
+      )}
+
       {view.overall && (
         <div className="grid gap-4 lg:grid-cols-4">
           <div className="flex items-center justify-center rounded-lg border border-border bg-surface p-5 shadow-card">
             <DonutStat
               value={view.overall.capabilityPercent}
-              label="Capability"
+              label={view.isPreview ? "Self capability (preview)" : "Capability"}
               size={130}
             />
           </div>
           <KpiCard
-            label="Manager level"
+            label={view.isPreview ? "Self level" : "Manager level"}
             value={`${view.overall.managerLevel} / 5`}
             hint="Average across areas"
           />
           <KpiCard label="Required level" value={view.overall.requiredLevel} />
           <div className="rounded-lg border border-slate-200 bg-white p-5">
-            <div className="text-sm text-slate-500">Overall gap & status</div>
+            <div className="text-sm text-slate-500">
+              {view.isPreview ? "Self gap & status (preview)" : "Overall gap & status"}
+            </div>
             <div className="mt-2 text-2xl font-bold text-slate-900">
               {view.overall.gap}
             </div>
@@ -73,7 +83,7 @@ export default async function ResultDetailPage({
       {view.areas.length > 0 && (
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
           <header className="border-b border-slate-200 bg-slate-50 px-5 py-3 font-semibold text-slate-900">
-            By competency area
+            By competency area{view.isPreview ? " (self preview)" : ""}
           </header>
           <div className="divide-y divide-slate-100">
             {view.areas.map((a) => (
