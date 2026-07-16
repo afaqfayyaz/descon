@@ -59,7 +59,27 @@ const ROLE_LABEL_TO_CODE: Record<string, string> = {
   Chief: "CHIEF",
 };
 
+/**
+ * Seeding wipes the framework collections, so refuse to run against a
+ * production target unless the caller explicitly opts in with --force.
+ */
+function assertSafeTarget() {
+  if (process.argv.includes("--force")) return;
+  const uri = process.env.MONGODB_URI ?? "";
+  const db = process.env.MONGODB_DB ?? "";
+  const looksProd =
+    process.env.NODE_ENV === "production" || /prod/i.test(`${uri} ${db}`);
+  if (looksProd) {
+    throw new Error(
+      `Refusing to seed what looks like production (db="${db}"). ` +
+        `This deletes all framework data. Re-run with --force if you are sure.`,
+    );
+  }
+}
+
 async function main() {
+  assertSafeTarget();
+
   const now = new Date();
   const systemActor = null;
 

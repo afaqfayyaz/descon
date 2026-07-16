@@ -5,7 +5,7 @@
   "description": "Caliber — Digital Employee Competency Assessment Platform",
   "author": "Afaq Fiaz",
   "scripts": {
-    "dev": "dotenv -e .env.dev -- next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,10 +14,10 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install chromium",
-    "seed": "dotenv -e .env.dev -- tsx scripts/seed.ts",
-    "seed:demo": "dotenv -e .env.dev -- tsx scripts/seed-demo.ts",
-    "cycle": "dotenv -e .env.dev -- tsx scripts/run-cycle.ts",
-    "create-admin": "dotenv -e .env.dev -- tsx scripts/create-admin.ts"
+    "seed": "dotenv -e .env.local -- tsx scripts/seed.ts",
+    "seed:demo": "dotenv -e .env.local -- tsx scripts/seed-demo.ts",
+    "cycle": "dotenv -e .env.local -- tsx scripts/run-cycle.ts",
+    "create-admin": "dotenv -e .env.local -- tsx scripts/create-admin.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
