@@ -23,12 +23,22 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
     return false;
   }
   try {
+    const from = fromAddress();
+    // Bare address out of `Name <address>` for the reply/unsubscribe headers.
+    const bareAddress = from.match(/<([^>]+)>/)?.[1] ?? from;
     await transport.sendMail({
-      from: fromAddress(),
+      from,
       to: message.to,
       subject: message.subject,
       text: message.text,
       html: message.html ?? wrapHtml(message.text),
+      // Deliverability: mailbox providers score notification mail without a
+      // reply path or List-Unsubscribe as spammier. These don't change what
+      // recipients see, only how filters classify the message.
+      replyTo: from,
+      headers: {
+        "List-Unsubscribe": `<mailto:${bareAddress}?subject=unsubscribe>`,
+      },
     });
     return true;
   } catch (error) {
