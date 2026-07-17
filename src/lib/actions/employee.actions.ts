@@ -7,6 +7,7 @@ import { z } from "zod";
 import { requirePermission } from "@/lib/auth/permissions";
 import { employeeService } from "@/lib/services/employee.service";
 import {
+  createApplicationUserSchema,
   createUserSchema,
   importUserRowSchema,
   updateUserSchema,
@@ -62,6 +63,38 @@ export async function deactivateEmployeeAction(id: string): Promise<Result> {
     return { success: true };
   } catch (error) {
     return fail(error, "deactivateEmployeeAction");
+  }
+}
+
+/**
+ * Create an application user. Gated on settings.manage rather than
+ * user.manage: granting platform access is an administrative act, not part of
+ * maintaining the staff directory.
+ */
+export async function createApplicationUserAction(
+  input: unknown,
+): Promise<Result> {
+  try {
+    const session = await requirePermission("settings.manage");
+    const data = createApplicationUserSchema.parse(input);
+    await employeeService.createApplicationUser(data, actorFrom(session));
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (error) {
+    return fail(error, "createApplicationUserAction");
+  }
+}
+
+export async function deactivateApplicationUserAction(
+  id: string,
+): Promise<Result> {
+  try {
+    const session = await requirePermission("settings.manage");
+    await employeeService.deactivate(new ObjectId(id), actorFrom(session));
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (error) {
+    return fail(error, "deactivateApplicationUserAction");
   }
 }
 

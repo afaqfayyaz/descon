@@ -5,7 +5,7 @@ import { ThresholdsForm } from "@/components/features/settings/thresholds-form";
 import { ApplicationUsers } from "@/components/features/settings/application-users";
 
 export default async function SettingsPage() {
-  await requirePermission("settings.manage");
+  const session = await requirePermission("settings.manage");
   const [thresholds, customised, appUsers] = await Promise.all([
     settingsService.getThresholds(),
     settingsService.isCustomised(),
@@ -21,7 +21,7 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      <ApplicationUsers users={appUsers.items} />
+      <ApplicationUsers users={appUsers.items} currentUserId={session.user.id} />
 
       <section className="space-y-3">
         <div>

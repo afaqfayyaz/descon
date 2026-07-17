@@ -32,6 +32,28 @@ export type CreateUserInput = z.infer<typeof createUserSchema>;
 export const updateUserSchema = createUserSchema.omit({ password: true });
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 
+/**
+ * Creating an application user — an account that administers the platform.
+ * Deliberately narrower than createUserSchema: an admin account has no
+ * designation, job family, division or reporting line, because it is never
+ * assessed. Only the two admin roles are offered; "super_admin" cannot be
+ * granted here (see systemRoleSchema).
+ */
+export const createApplicationUserSchema = z.object({
+  fullName: z.string().min(1, "Name is required").max(160),
+  email: z.string().email("A valid email is required").max(200),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(100),
+  systemRoles: z
+    .array(z.enum(["hr_admin", "executive"]))
+    .min(1, "Pick at least one access level"),
+});
+export type CreateApplicationUserInput = z.infer<
+  typeof createApplicationUserSchema
+>;
+
 /** One row from a bulk CSV/Excel import (codes resolved server-side). */
 export const importUserRowSchema = z.object({
   fullName: z.string().min(1).max(160),

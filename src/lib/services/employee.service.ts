@@ -10,10 +10,12 @@ import { ConflictError, NotFoundError, ValidationError } from "@/lib/utils/error
 import type { Actor } from "@/lib/domain/types/common.types";
 import type { User } from "@/lib/domain/types/user.types";
 import type {
+  CreateApplicationUserInput,
   CreateUserInput,
   ImportUserRow,
   UpdateUserInput,
 } from "@/lib/domain/validation/user.schema";
+import { SUPER_ADMIN_ROLE } from "@/lib/domain/constants";
 
 const BCRYPT_COST = 12;
 
@@ -120,6 +122,66 @@ export const employeeService = {
     return user;
   },
 
+  /**
+   * Create an application user — an account that administers the platform and
+   * is never assessed. Mirrors scripts/create-admin.
+   *
+   * designation/jobFamily/division are required by the User shape but carry no
+   * meaning for an admin: they exist to place staff in the competency
+   * framework. They're filled with the first available values purely to satisfy
+   * the schema, and are never read, because application users are excluded from
+   * the People Directory and from campaign targeting at the repository level.
+   */
+  async createApplicationUser(
+    input: CreateApplicationUserInput,
+    actor: Actor,
+  ): Promise<User> {
+    const existing = await userRepo.findByEmail(input.email);
+    if (existing) {
+      throw new ConflictError(`Email "${input.email}" is already in use`);
+    }
+
+    const [roles, families] = await Promise.all([
+      roleRepo.findAll(),
+      jobFamilyRepo.findAll(),
+    ]);
+    const now = new Date();
+
+    const user = await userRepo.insert({
+      email: input.email,
+      fullName: input.fullName,
+      employeeCode: `APP-${now.getTime()}`,
+      passwordHash: await bcrypt.hash(input.password, BCRYPT_COST),
+      authProvider: "local",
+      designation: roles[0]?._id ?? new ObjectId(),
+      division: "Corporate",
+      department: null,
+      jobFamily: families[0]?._id ?? new ObjectId(),
+      lineManagerId: null,
+      systemRoles: input.systemRoles,
+      avatarUrl: null,
+      phoneNumber: null,
+      joinedAt: now,
+      isActive: true,
+      lastLoginAt: null,
+      createdAt: now,
+      updatedAt: now,
+      createdBy: actor.id,
+      updatedBy: actor.id,
+    });
+
+    await auditService.log({
+      actorId: actor.id,
+      actorEmail: actor.email,
+      action: "user.application_created",
+      entityType: "User",
+      entityId: user._id,
+      before: null,
+      after: { email: user.email, systemRoles: user.systemRoles },
+    });
+    return user;
+  },
+
   async update(
     id: ObjectId,
     input: UpdateUserInput,
@@ -165,6 +227,12 @@ export const employeeService = {
     if (!current) throw new NotFoundError("Employee");
     if (id.equals(actor.id)) {
       throw new ConflictError("You cannot deactivate your own account");
+    }
+    // The break-glass account is hidden from every listing, so its id should
+    // never surface in the UI — but guard the mutation too, so knowing the id
+    // isn't enough to lock everyone out.
+    if (current.systemRoles.includes(SUPER_ADMIN_ROLE)) {
+      throw new NotFoundError("Employee");
     }
     await userRepo.update(id, {
       isActive: false,
