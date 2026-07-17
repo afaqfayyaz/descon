@@ -108,7 +108,7 @@ export default async function ExecutivePage() {
         </Widget>
 
         <Widget
-          title="Organisation Competency Radar"
+          title="Competency Radar"
           info="Average required vs current level for each competency area (0–5)."
           empty={data.areaRadar.length === 0}
         >

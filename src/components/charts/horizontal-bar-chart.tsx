@@ -44,6 +44,34 @@ function formatValue(v: number, format: HBarFormat): string {
   return `${v}`;
 }
 
+const LABEL_MAX_CHARS = 26;
+
+interface CategoryTickProps {
+  x?: number;
+  y?: number;
+  payload?: { value?: string | number };
+}
+
+/**
+ * Single-line, ellipsized row label with the full text as a hover tooltip.
+ * Recharts' default tick wraps long names ("7.3 Vendor Governance &
+ * Sustainability Compliance") onto unlimited lines, which overflow the row
+ * height and collide with neighbouring labels.
+ */
+function CategoryTick({ x = 0, y = 0, payload }: CategoryTickProps) {
+  const full = String(payload?.value ?? "");
+  const label =
+    full.length > LABEL_MAX_CHARS
+      ? `${full.slice(0, LABEL_MAX_CHARS - 1).trimEnd()}…`
+      : full;
+  return (
+    <text x={x} y={y} dy={4} textAnchor="end" fontSize={12} fill="#475569">
+      <title>{full}</title>
+      {label}
+    </text>
+  );
+}
+
 /** Generic single-series horizontal bar chart (gaps, proficiency per area). */
 export function HorizontalBarChart({
   data,
@@ -75,8 +103,8 @@ export function HorizontalBarChart({
         <YAxis
           type="category"
           dataKey="label"
-          width={170}
-          tick={{ fontSize: 12, fill: "#475569" }}
+          width={190}
+          tick={<CategoryTick />}
           axisLine={false}
           tickLine={false}
         />

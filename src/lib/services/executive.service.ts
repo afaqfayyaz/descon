@@ -205,7 +205,13 @@ export const executiveService = {
     const areaMap = new Map(areas.map((a) => [a._id.toString(), a]));
     const areaRadar: AreaRadarRow[] = byArea
       .map((a) => ({
-        area: areaMap.get(a.areaId.toString())?.code ?? "—",
+        // The axis label must carry meaning on its own — the source
+        // PetroSkills profile labels each vertex with the area name, not a
+        // bare code number (the chart wraps/truncates long names itself).
+        area:
+          areaMap.get(a.areaId.toString())?.name ??
+          areaMap.get(a.areaId.toString())?.code ??
+          "—",
         sequence: areaMap.get(a.areaId.toString())?.sequence ?? 999,
         manager: round2(a.avgManager),
         required: round2(a.avgRequired),

@@ -39,3 +39,9 @@
     page-break-inside: avoid;
   }
 }
+
+/* Radar vertex labels may extend slightly past the chart viewport into the
+   card padding; without this the SVG clips them mid-word. */
+svg.recharts-surface {
+  overflow: visible;
+}
