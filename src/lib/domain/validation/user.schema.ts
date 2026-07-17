@@ -29,7 +29,15 @@ export const createUserSchema = z.object({
 });
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
-export const updateUserSchema = createUserSchema.omit({ password: true });
+/**
+ * Editing a person. `password`, when present, resets their sign-in password.
+ * `lineManagerId` is intentionally absent: reporting lines aren't maintained
+ * through the edit form — raters are chosen at assessment send time — and an
+ * omitted field must not wipe an existing relationship.
+ */
+export const updateUserSchema = createUserSchema.omit({
+  lineManagerId: true,
+});
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 
 /**

@@ -84,14 +84,6 @@ export default async function EmployeesPage({
     id: f._id.toString(),
     label: f.name,
   }));
-  // Only people who actually hold the line-manager role can be picked as a manager.
-  const managers: Option[] = allUsers
-    .filter((u) => u.systemRoles.includes("line_manager"))
-    .map((u) => ({
-      id: u._id.toString(),
-      label: `${u.fullName} · ${roleName.get(u.designation.toString()) ?? "—"} · ${u.division}`,
-    }));
-
   const qs = (role?: string) => {
     const p = new URLSearchParams();
     if (search) p.set("search", search);
@@ -164,7 +156,6 @@ export default async function EmployeesPage({
         activeRole={activeCat.id}
         designations={designations}
         jobFamilies={jobFamilies}
-        managers={managers}
       />
     </div>
   );

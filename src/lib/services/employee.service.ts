@@ -138,7 +138,7 @@ export const employeeService = {
     input: CreateApplicationUserInput,
     actor: Actor,
   ): Promise<User> {
-    const existing = await userRepo.findByEmail(input.email);
+    const existing = await userRepo.findByEmailAny(input.email);
     if (existing) {
       throw new ConflictError(`Email "${input.email}" is already in use`);
     }
@@ -193,11 +193,10 @@ export const employeeService = {
     if (!current) throw new NotFoundError("Employee");
     await assertUnique(input.email, input.employeeCode, id);
 
-    const lineManagerId = input.lineManagerId ?? null;
-    if (lineManagerId) await assertNoCycle(id, lineManagerId);
-
     // line_manager is derived from who reports to whom, never sent by the
-    // client — preserve whatever the last sync decided.
+    // client — preserve whatever the last sync decided. The reporting line
+    // itself (lineManagerId) isn't part of the edit form either, so it is
+    // left untouched here.
     const wasManager = current.systemRoles.includes(SYSTEM_ROLES.LINE_MANAGER);
     const systemRoles = wasManager
       ? [...new Set([...input.systemRoles, SYSTEM_ROLES.LINE_MANAGER])]
@@ -211,19 +210,17 @@ export const employeeService = {
       jobFamily: input.jobFamily,
       division: input.division,
       department: input.department ?? null,
-      lineManagerId,
       systemRoles,
       phoneNumber: input.phoneNumber ?? null,
+      // A filled "Reset password" field takes effect here; empty leaves the
+      // current password alone.
+      ...(input.password
+        ? { passwordHash: await bcrypt.hash(input.password, BCRYPT_COST) }
+        : {}),
       updatedAt: new Date(),
       updatedBy: actor.id,
     });
     if (!updated) throw new NotFoundError("Employee");
-
-    // The reporting line may have moved, so re-derive for both ends.
-    if (!(current.lineManagerId?.equals(lineManagerId ?? new ObjectId()) ?? false)) {
-      await syncLineManagerRole(current.lineManagerId);
-      await syncLineManagerRole(lineManagerId);
-    }
 
     await auditService.log({
       actorId: actor.id,
@@ -434,9 +431,15 @@ async function assertUnique(
   employeeCode: string,
   excludeId: ObjectId | null,
 ): Promise<void> {
-  const byEmail = await userRepo.findByEmail(email);
+  // Check across ALL accounts: the unique index spans deactivated people too,
+  // so an active-only lookup would pass validation and then hit a raw E11000.
+  const byEmail = await userRepo.findByEmailAny(email);
   if (byEmail && (!excludeId || !byEmail._id.equals(excludeId))) {
-    throw new ConflictError(`Email "${email}" is already in use`);
+    throw new ConflictError(
+      byEmail.isActive
+        ? `Email "${email}" is already in use`
+        : `Email "${email}" belongs to a deactivated account — restore it from the Deactivated tab, or use a different email`,
+    );
   }
   const byCode = await userRepo.findByEmployeeCode(employeeCode);
   if (byCode && (!excludeId || !byCode._id.equals(excludeId))) {

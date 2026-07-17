@@ -22,6 +22,7 @@ type UserPatch = Partial<
     | "lineManagerId"
     | "systemRoles"
     | "phoneNumber"
+    | "passwordHash"
     | "isActive"
   >
 > & { updatedAt: Date; updatedBy: ObjectId | null };
@@ -72,6 +73,18 @@ export const userRepo = {
     return db
       .collection<User>(COLLECTIONS.USERS)
       .findOne({ email: email.toLowerCase(), isActive: true });
+  },
+
+  /**
+   * Find by email regardless of active state. Uniqueness checks must use this:
+   * the unique index spans deactivated accounts too, so validating against
+   * active users only lets a duplicate through to a raw E11000.
+   */
+  async findByEmailAny(email: string): Promise<User | null> {
+    const db = await getDb();
+    return db
+      .collection<User>(COLLECTIONS.USERS)
+      .findOne({ email: email.toLowerCase() });
   },
 
   async findManyByIds(ids: ObjectId[]): Promise<User[]> {

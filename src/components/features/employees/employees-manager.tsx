@@ -40,7 +40,6 @@ interface Props {
   activeRole: string;
   designations: Option[];
   jobFamilies: Option[];
-  managers: Option[];
 }
 
 const STATUS_META: Record<
@@ -77,7 +76,6 @@ interface FormState {
   jobFamily: string;
   division: string;
   department: string;
-  lineManagerId: string;
   systemRoles: string[];
   phoneNumber: string;
   password: string;
@@ -92,7 +90,6 @@ function emptyForm(designations: Option[], families: Option[]): FormState {
     jobFamily: families[0]?.id ?? "",
     division: "",
     department: "",
-    lineManagerId: "",
     systemRoles: ["employee"],
     phoneNumber: "",
     password: "",
@@ -109,7 +106,6 @@ export function EmployeesManager({
   activeRole,
   designations,
   jobFamilies,
-  managers,
 }: Props) {
   const router = useRouter();
   const [editing, setEditing] = useState<EmployeeListItem | null>(null);
@@ -156,7 +152,6 @@ export function EmployeesManager({
       jobFamilies.find((f) => f.label === emp.jobFamilyName)?.id ??
       jobFamilies[0]?.id ??
       "";
-    const manager = managers.find((m) => m.label.startsWith(emp.managerName ?? "\u0000"));
     setForm({
       fullName: emp.fullName,
       email: emp.email,
@@ -165,7 +160,6 @@ export function EmployeesManager({
       jobFamily,
       division: emp.division,
       department: emp.department ?? "",
-      lineManagerId: manager?.id ?? "",
       systemRoles: emp.systemRoles.filter((r) => r !== "system"),
       phoneNumber: "",
       password: "",
@@ -190,7 +184,6 @@ export function EmployeesManager({
       jobFamily: form.jobFamily,
       division: form.division.trim(),
       department: form.department.trim() || null,
-      lineManagerId: form.lineManagerId || null,
       // line_manager is derived server-side from reporting lines, so it's never
       // sent from here; update() preserves whatever the last sync decided.
       systemRoles: STAFF_ROLES,
@@ -498,22 +491,6 @@ export function EmployeesManager({
               />
             </Field>
           </div>
-          <Field label="Line manager (optional)">
-            <select
-              className={inputCls}
-              value={form.lineManagerId}
-              onChange={(e) =>
-                setForm({ ...form, lineManagerId: e.target.value })
-              }
-            >
-              <option value="">— None —</option>
-              {managers.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          </Field>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field label="Phone (optional)">
               <input
