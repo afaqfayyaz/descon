@@ -22,10 +22,16 @@ const LIMIT = 20;
  * only — admin and executive accounts are application users and are managed
  * under Settings → Application users, not here.
  */
-const CATEGORIES: { id: string; label: string; role?: SystemRole }[] = [
+const CATEGORIES: {
+  id: string;
+  label: string;
+  role?: SystemRole;
+  onlyInactive?: boolean;
+}[] = [
   { id: "all", label: "All" },
   { id: "employee", label: "Employees", role: "employee" },
   { id: "line_manager", label: "Line Managers", role: "line_manager" },
+  { id: "inactive", label: "Deactivated", onlyInactive: true },
 ];
 
 export default async function EmployeesPage({
@@ -43,6 +49,7 @@ export default async function EmployeesPage({
     search: search || undefined,
     role: activeCat.role,
     kind: "staff" as const,
+    onlyInactive: activeCat.onlyInactive,
   };
 
   const [{ items, total }, roles, families, allUsers, counts] =
@@ -57,6 +64,7 @@ export default async function EmployeesPage({
             search: search || undefined,
             role: c.role,
             kind: "staff",
+            onlyInactive: c.onlyInactive,
           }),
         ),
       ),

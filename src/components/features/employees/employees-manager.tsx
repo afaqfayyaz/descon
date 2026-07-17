@@ -20,6 +20,7 @@ import {
   bulkImportEmployeesAction,
   createEmployeeAction,
   deactivateEmployeeAction,
+  restoreEmployeeAction,
   updateEmployeeAction,
 } from "@/lib/actions/employee.actions";
 
@@ -60,11 +61,12 @@ const LIGHT_TEXT: Record<string, string> = {
 };
 
 /**
- * Staff roles only. Admin/executive access is a separate kind of account
- * managed under Settings → Application users; granting it here would move the
- * person out of this directory entirely.
+ * Everyone in this directory is an employee. line_manager isn't picked here —
+ * it's derived server-side from who reports to whom, so assigning someone as
+ * another person's manager is what makes them one. Admin/executive access is a
+ * different kind of account entirely (Settings → Application users).
  */
-const ALL_ROLES = ["employee", "line_manager"] as const;
+const STAFF_ROLES = ["employee"];
 
 interface FormState {
   fullName: string;
@@ -175,15 +177,6 @@ export function EmployeesManager({
     setError(null);
   }
 
-  function toggleRole(role: string) {
-    setForm((prev) => ({
-      ...prev,
-      systemRoles: prev.systemRoles.includes(role)
-        ? prev.systemRoles.filter((r) => r !== role)
-        : [...prev.systemRoles, role],
-    }));
-  }
-
   function submit() {
     setError(null);
     const payload = {
@@ -195,7 +188,9 @@ export function EmployeesManager({
       division: form.division.trim(),
       department: form.department.trim() || null,
       lineManagerId: form.lineManagerId || null,
-      systemRoles: form.systemRoles,
+      // line_manager is derived server-side from reporting lines, so it's never
+      // sent from here; update() preserves whatever the last sync decided.
+      systemRoles: STAFF_ROLES,
       phoneNumber: form.phoneNumber.trim() || null,
       ...(form.password.trim() ? { password: form.password.trim() } : {}),
     };
@@ -209,10 +204,26 @@ export function EmployeesManager({
   }
 
   function deactivate(emp: EmployeeListItem) {
-    if (!confirm(`Deactivate ${emp.fullName}?`)) return;
+    if (
+      !confirm(
+        `Deactivate ${emp.fullName}? They'll be removed from the directory but ` +
+          `their past assessments are kept. You can restore them from the ` +
+          `Deactivated tab.`,
+      )
+    )
+      return;
     startTransition(async () => {
       const res = await deactivateEmployeeAction(emp.id);
       if (!res.success) alert(res.error);
+      else router.refresh();
+    });
+  }
+
+  function restore(emp: EmployeeListItem) {
+    startTransition(async () => {
+      const res = await restoreEmployeeAction(emp.id);
+      if (!res.success) alert(res.error);
+      else router.refresh();
     });
   }
 
@@ -337,6 +348,15 @@ export function EmployeesManager({
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
+                      {!e.isActive ? (
+                        <button
+                          type="button"
+                          onClick={() => restore(e)}
+                          className="rounded px-2 py-1 text-xs font-medium text-accent hover:bg-accent/10"
+                        >
+                          Restore
+                        </button>
+                      ) : (
                       <button
                         type="button"
                         onClick={() => deactivate(e)}
@@ -345,6 +365,7 @@ export function EmployeesManager({
                       >
                         <Archive className="h-4 w-4" />
                       </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -483,29 +504,6 @@ export function EmployeesManager({
                 </option>
               ))}
             </select>
-          </Field>
-          <Field label="Access roles">
-            <div className="flex flex-wrap gap-3 pt-1">
-              {ALL_ROLES.map((r) => (
-                <label
-                  key={r}
-                  htmlFor={`role-${r}`}
-                  className="flex items-center gap-1.5 text-sm capitalize"
-                >
-                  <input
-                    id={`role-${r}`}
-                    type="checkbox"
-                    checked={form.systemRoles.includes(r)}
-                    onChange={() => toggleRole(r)}
-                  />
-                  {r.replace("_", " ")}
-                </label>
-              ))}
-            </div>
-            <p className="mt-1.5 text-xs text-text-tertiary">
-              A person can hold more than one role — e.g. an employee who also
-              manages a team is both <em>Employee</em> and <em>Line Manager</em>.
-            </p>
           </Field>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field label="Phone (optional)">

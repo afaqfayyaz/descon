@@ -15,7 +15,7 @@ import type {
   ImportUserRow,
   UpdateUserInput,
 } from "@/lib/domain/validation/user.schema";
-import { SUPER_ADMIN_ROLE } from "@/lib/domain/constants";
+import { SUPER_ADMIN_ROLE, SYSTEM_ROLES } from "@/lib/domain/constants";
 
 const BCRYPT_COST = 12;
 
@@ -110,6 +110,8 @@ export const employeeService = {
       updatedBy: actor.id,
     });
 
+    await syncLineManagerRole(lineManagerId);
+
     await auditService.log({
       actorId: actor.id,
       actorEmail: actor.email,
@@ -194,6 +196,13 @@ export const employeeService = {
     const lineManagerId = input.lineManagerId ?? null;
     if (lineManagerId) await assertNoCycle(id, lineManagerId);
 
+    // line_manager is derived from who reports to whom, never sent by the
+    // client — preserve whatever the last sync decided.
+    const wasManager = current.systemRoles.includes(SYSTEM_ROLES.LINE_MANAGER);
+    const systemRoles = wasManager
+      ? [...new Set([...input.systemRoles, SYSTEM_ROLES.LINE_MANAGER])]
+      : input.systemRoles.filter((r) => r !== SYSTEM_ROLES.LINE_MANAGER);
+
     const updated = await userRepo.update(id, {
       fullName: input.fullName,
       email: input.email,
@@ -203,12 +212,18 @@ export const employeeService = {
       division: input.division,
       department: input.department ?? null,
       lineManagerId,
-      systemRoles: input.systemRoles,
+      systemRoles,
       phoneNumber: input.phoneNumber ?? null,
       updatedAt: new Date(),
       updatedBy: actor.id,
     });
     if (!updated) throw new NotFoundError("Employee");
+
+    // The reporting line may have moved, so re-derive for both ends.
+    if (!(current.lineManagerId?.equals(lineManagerId ?? new ObjectId()) ?? false)) {
+      await syncLineManagerRole(current.lineManagerId);
+      await syncLineManagerRole(lineManagerId);
+    }
 
     await auditService.log({
       actorId: actor.id,
@@ -239,6 +254,12 @@ export const employeeService = {
       updatedAt: new Date(),
       updatedBy: actor.id,
     });
+
+    // Their manager may have just lost their last report; and if they managed
+    // people themselves, they no longer count as an active manager.
+    await syncLineManagerRole(current.lineManagerId);
+    await syncLineManagerRole(id);
+
     await auditService.log({
       actorId: actor.id,
       actorEmail: actor.email,
@@ -247,6 +268,34 @@ export const employeeService = {
       entityId: id,
       before: { isActive: true },
       after: { isActive: false },
+    });
+  },
+
+  /** Bring a deactivated person back into the directory. */
+  async restore(id: ObjectId, actor: Actor): Promise<void> {
+    const current = await userRepo.findByIdAny(id);
+    if (!current) throw new NotFoundError("Employee");
+    if (current.systemRoles.includes(SUPER_ADMIN_ROLE)) {
+      throw new NotFoundError("Employee");
+    }
+
+    await userRepo.update(id, {
+      isActive: true,
+      updatedAt: new Date(),
+      updatedBy: actor.id,
+    });
+
+    await syncLineManagerRole(current.lineManagerId);
+    await syncLineManagerRole(id);
+
+    await auditService.log({
+      actorId: actor.id,
+      actorEmail: actor.email,
+      action: "user.restored",
+      entityType: "User",
+      entityId: id,
+      before: { isActive: false },
+      after: { isActive: true },
     });
   },
 
@@ -348,6 +397,37 @@ export const employeeService = {
     return { created, updated, errors };
   },
 };
+
+/**
+ * Bring someone's line_manager role in line with reality.
+ *
+ * Being a line manager isn't a property you tick — it's simply whether anyone
+ * reports to you. The role exists only to carry permissions (rate, view.team,
+ * report.team); the actual team is always looked up by lineManagerId. Deriving
+ * it here keeps the two from drifting apart, which a manual checkbox couldn't.
+ *
+ * Call for both the old and new manager whenever a reporting line changes, and
+ * for someone's manager when they're deactivated or restored.
+ */
+async function syncLineManagerRole(managerId: ObjectId | null): Promise<void> {
+  if (!managerId) return;
+  const manager = await userRepo.findByIdAny(managerId);
+  if (!manager) return;
+
+  const hasReports = (await userRepo.countReports(managerId)) > 0;
+  const holdsRole = manager.systemRoles.includes(SYSTEM_ROLES.LINE_MANAGER);
+  if (hasReports === holdsRole) return;
+
+  const systemRoles = hasReports
+    ? [...manager.systemRoles, SYSTEM_ROLES.LINE_MANAGER]
+    : manager.systemRoles.filter((r) => r !== SYSTEM_ROLES.LINE_MANAGER);
+
+  await userRepo.update(managerId, {
+    systemRoles,
+    updatedAt: new Date(),
+    updatedBy: null,
+  });
+}
 
 async function assertUnique(
   email: string,

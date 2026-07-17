@@ -66,6 +66,17 @@ export async function deactivateEmployeeAction(id: string): Promise<Result> {
   }
 }
 
+export async function restoreEmployeeAction(id: string): Promise<Result> {
+  try {
+    const session = await requirePermission("user.manage");
+    await employeeService.restore(new ObjectId(id), actorFrom(session));
+    revalidatePath("/employees");
+    return { success: true };
+  } catch (error) {
+    return fail(error, "restoreEmployeeAction");
+  }
+}
+
 /**
  * Create an application user. Gated on settings.manage rather than
  * user.manage: granting platform access is an administrative act, not part of

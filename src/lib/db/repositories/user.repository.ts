@@ -38,6 +38,14 @@ export interface UserFilters {
    * platform (Settings). Omit to list both.
    */
   kind?: "staff" | "application";
+  /**
+   * Deactivated people are kept (past assessments still reference them) but are
+   * hidden by default, so deactivating visibly removes someone from the
+   * directory. Set true to list them for restoring.
+   */
+  includeInactive?: boolean;
+  /** List *only* deactivated people (the Deactivated tab). */
+  onlyInactive?: boolean;
 }
 
 export const userRepo = {
@@ -110,6 +118,14 @@ export const userRepo = {
     return db.collection<User>(COLLECTIONS.USERS).find(query).toArray();
   },
 
+  /** How many active people report to this person. */
+  async countReports(managerId: ObjectId): Promise<number> {
+    const db = await getDb();
+    return db
+      .collection<User>(COLLECTIONS.USERS)
+      .countDocuments({ lineManagerId: managerId, isActive: true });
+  },
+
   /** Distinct, sorted division names across active users (for filters). */
   async distinctDivisions(): Promise<string[]> {
     const db = await getDb();
@@ -173,6 +189,8 @@ function buildUserQuery(filters: UserFilters): Record<string, unknown> {
   const query: Record<string, unknown> = {};
   if (filters.division) query.division = filters.division;
   if (filters.jobFamilyId) query.jobFamily = filters.jobFamilyId;
+  if (filters.onlyInactive) query.isActive = false;
+  else if (!filters.includeInactive) query.isActive = true;
   if (filters.search) {
     const rx = new RegExp(escapeRegex(filters.search), "i");
     query.$or = [{ fullName: rx }, { email: rx }, { employeeCode: rx }];
