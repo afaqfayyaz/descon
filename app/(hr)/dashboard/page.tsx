@@ -58,7 +58,9 @@ export default async function DashboardPage() {
   const [overview, campaigns, headcount] = await Promise.all([
     executiveService.getOverview(),
     campaignRepo.findAll(),
-    userRepo.count({}),
+    // Staff only — admin accounts aren't assessed, so counting them here would
+    // overstate headcount and never reconcile with the assessed figure.
+    userRepo.count({ kind: "staff" }),
   ]);
 
   const launched = campaigns.filter((c) => c.status !== "draft");

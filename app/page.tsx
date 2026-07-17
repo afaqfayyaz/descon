@@ -4,6 +4,7 @@ import type { SystemRole } from "@/lib/domain/constants";
 
 /** Home route for each role (mirrors protected-layout's ROLE_HOME). */
 const ROLE_HOME: Record<SystemRole, string> = {
+  super_admin: "/dashboard",
   hr_admin: "/dashboard",
   executive: "/executive",
   line_manager: "/team",
@@ -11,6 +12,7 @@ const ROLE_HOME: Record<SystemRole, string> = {
   system: "/assessment",
 };
 const PRIORITY: SystemRole[] = [
+  "super_admin",
   "hr_admin",
   "executive",
   "line_manager",

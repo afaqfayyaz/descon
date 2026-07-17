@@ -57,7 +57,10 @@ export default async function AssessmentsPage() {
     isHr ? campaignService.listForHub() : Promise.resolve(null),
     isHr ? jobFamilyRepo.findAll() : Promise.resolve([]),
     isHr ? questionnaireService.listPendingOrgWide() : Promise.resolve([]),
-    isHr ? userRepo.findMany({}, { page: 1, limit: 500 }) : Promise.resolve([]),
+    // Raters are staff — an admin account isn't part of the reporting line.
+    isHr
+      ? userRepo.findMany({ kind: "staff" }, { page: 1, limit: 500 })
+      : Promise.resolve([]),
     isHr ? roleRepo.findAll() : Promise.resolve([]),
   ]);
   const firstName = (session.user.name ?? "there").split(/\s+/)[0];

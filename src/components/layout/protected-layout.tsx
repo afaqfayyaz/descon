@@ -6,6 +6,7 @@ import type { SystemRole } from "@/lib/domain/constants";
 import { notificationService } from "@/lib/services/notification.service";
 
 const ROLE_LABELS: Record<SystemRole, string> = {
+  super_admin: "Super Admin",
   hr_admin: "HR Admin",
   line_manager: "Line Manager",
   executive: "Executive",
@@ -14,6 +15,7 @@ const ROLE_LABELS: Record<SystemRole, string> = {
 };
 
 const PRIORITY: SystemRole[] = [
+  "super_admin",
   "hr_admin",
   "executive",
   "line_manager",
@@ -22,6 +24,7 @@ const PRIORITY: SystemRole[] = [
 
 /** Home route for each role (used by the role switcher). */
 const ROLE_HOME: Record<SystemRole, string> = {
+  super_admin: "/dashboard",
   hr_admin: "/dashboard",
   executive: "/executive",
   line_manager: "/team",
@@ -30,7 +33,13 @@ const ROLE_HOME: Record<SystemRole, string> = {
 };
 
 /** Build the sidebar from the union of the user's roles, grouped by section. */
-function buildNav(roles: SystemRole[]): NavItem[] {
+function buildNav(input: SystemRole[]): NavItem[] {
+  // The super admin sees everything an HR admin does; treating it as hr_admin
+  // here keeps the nav rules below in one place rather than duplicating each
+  // check. Its own permissions are granted separately in hasPermission.
+  const roles = input.includes("super_admin")
+    ? ([...input, "hr_admin", "executive"] as SystemRole[])
+    : input;
   const items: NavItem[] = [];
   if (roles.includes("hr_admin")) {
     items.push({ href: "/dashboard", label: "Dashboard", icon: "dashboard", section: "Overview" });

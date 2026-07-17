@@ -13,7 +13,9 @@ export default async function TrainingsPage() {
   const [trainings, tree, users] = await Promise.all([
     trainingService.listView(),
     frameworkService.getFrameworkTree(),
-    userRepo.findMany({}, { page: 1, limit: 500 }),
+    // Staff only — trainings are assigned to people who are assessed, never to
+    // admin accounts.
+    userRepo.findMany({ kind: "staff" }, { page: 1, limit: 500 }),
   ]);
 
   const subCompetencies: Option[] = [];

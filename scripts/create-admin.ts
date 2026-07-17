@@ -1,8 +1,14 @@
 /**
- * Create the first HR Admin user (local credentials fallback).
+ * Create an application user — an account that administers the platform. These
+ * are deliberately separate from staff: they are never assessed and never
+ * appear in the People Directory.
  *
  * Usage:
  *   npm run create-admin -- --email hr@caliber.app --name "HR Admin" --password secret
+ *   npm run create-admin -- --email root@caliber.app --name "Root" --password secret --super
+ *
+ * --super creates the break-glass super admin: it holds every permission and is
+ * hidden from every list in the UI, so this script is the only way to make one.
  */
 import bcrypt from "bcryptjs";
 import { ObjectId } from "mongodb";
@@ -12,6 +18,7 @@ import { roleRepo } from "@/lib/db/repositories/role.repository";
 import { jobFamilyRepo } from "@/lib/db/repositories/job-family.repository";
 import { userRepo } from "@/lib/db/repositories/user.repository";
 import { getClient } from "@/lib/db/client";
+import { SYSTEM_ROLES, type SystemRole } from "@/lib/domain/constants";
 
 function arg(name: string, fallback?: string): string {
   const idx = process.argv.indexOf(`--${name}`);
@@ -21,9 +28,13 @@ function arg(name: string, fallback?: string): string {
 }
 
 async function main() {
+  const isSuper = process.argv.includes("--super");
   const email = arg("email");
-  const fullName = arg("name", "HR Admin");
+  const fullName = arg("name", isSuper ? "Super Admin" : "HR Admin");
   const password = arg("password");
+  const systemRoles: SystemRole[] = isSuper
+    ? [SYSTEM_ROLES.SUPER_ADMIN]
+    : [SYSTEM_ROLES.HR_ADMIN];
 
   await ensureIndexes();
 
@@ -50,12 +61,7 @@ async function main() {
     department: "HR",
     jobFamily: families[0]?._id ?? new ObjectId(),
     lineManagerId: null,
-    // hr_admin only — this is an administrator account, not a person being
-    // assessed, so it must not show up in the employee directory or headcount.
-    // The employee role grants nothing extra anyway: the permissions staff rely
-    // on (assessment.self.submit, assessment.view.own) are open to any signed-in
-    // user via "*".
-    systemRoles: ["hr_admin"],
+    systemRoles,
     avatarUrl: null,
     phoneNumber: null,
     joinedAt: now,
@@ -67,7 +73,10 @@ async function main() {
     updatedBy: null,
   });
 
-  console.log(`Created HR Admin: ${user.email} (${user._id.toString()})`);
+  console.log(
+    `Created ${isSuper ? "SUPER ADMIN (hidden from all UI)" : "HR Admin"}: ` +
+      `${user.email} (${user._id.toString()})`,
+  );
   const client = await getClient();
   await client.close();
 }

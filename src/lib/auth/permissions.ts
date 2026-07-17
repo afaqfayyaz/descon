@@ -1,5 +1,5 @@
 import type { Session } from "next-auth";
-import type { SystemRole } from "@/lib/domain/constants";
+import { SUPER_ADMIN_ROLE, type SystemRole } from "@/lib/domain/constants";
 import { ForbiddenError } from "@/lib/utils/errors";
 import { requireSession } from "@/lib/auth/session";
 
@@ -68,6 +68,10 @@ export function hasPermission(
   roles: ReadonlyArray<SystemRole>,
   permission: string,
 ): boolean {
+  // The break-glass account bypasses the map entirely, so a permission added
+  // later can never lock it out.
+  if (roles.includes(SUPER_ADMIN_ROLE)) return true;
+
   const allowed = allowedRolesFor(permission);
   if (!allowed) return false;
   if (allowed.includes("*")) return true;

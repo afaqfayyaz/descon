@@ -17,13 +17,15 @@ import type { SystemRole } from "@/lib/domain/constants";
 
 const LIMIT = 20;
 
-/** Directory category tabs (driven by RBAC roles, not a separate field). */
+/**
+ * Directory category tabs (driven by RBAC roles, not a separate field). Staff
+ * only — admin and executive accounts are application users and are managed
+ * under Settings → Application users, not here.
+ */
 const CATEGORIES: { id: string; label: string; role?: SystemRole }[] = [
   { id: "all", label: "All" },
   { id: "employee", label: "Employees", role: "employee" },
   { id: "line_manager", label: "Line Managers", role: "line_manager" },
-  { id: "hr_admin", label: "HR Admins", role: "hr_admin" },
-  { id: "executive", label: "Executives", role: "executive" },
 ];
 
 export default async function EmployeesPage({
@@ -40,6 +42,7 @@ export default async function EmployeesPage({
   const baseFilter = {
     search: search || undefined,
     role: activeCat.role,
+    kind: "staff" as const,
   };
 
   const [{ items, total }, roles, families, allUsers, counts] =
@@ -47,10 +50,14 @@ export default async function EmployeesPage({
       employeeService.list(baseFilter, { page, limit: LIMIT }),
       roleRepo.findAll(),
       jobFamilyRepo.findAll(),
-      userRepo.findMany({}, { page: 1, limit: 500 }),
+      userRepo.findMany({ kind: "staff" }, { page: 1, limit: 500 }),
       Promise.all(
         CATEGORIES.map((c) =>
-          userRepo.count({ search: search || undefined, role: c.role }),
+          userRepo.count({
+            search: search || undefined,
+            role: c.role,
+            kind: "staff",
+          }),
         ),
       ),
     ]);

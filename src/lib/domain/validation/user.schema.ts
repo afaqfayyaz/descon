@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { objectIdSchema } from "./common.schema";
 
+/**
+ * Roles assignable through the UI. "super_admin" is deliberately absent: the
+ * break-glass account may only be created out-of-band by scripts/create-admin
+ * --super, so no request through this schema can ever grant it.
+ */
 const systemRoleSchema = z.enum([
   "employee",
   "line_manager",

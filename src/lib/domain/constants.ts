@@ -8,9 +8,40 @@ export const SYSTEM_ROLES = {
   LINE_MANAGER: "line_manager",
   HR_ADMIN: "hr_admin",
   EXECUTIVE: "executive",
+  SUPER_ADMIN: "super_admin",
   SYSTEM: "system",
 } as const;
 export type SystemRole = (typeof SYSTEM_ROLES)[keyof typeof SYSTEM_ROLES];
+
+/**
+ * Accounts are either *staff* — real people who are assessed and appear in the
+ * People Directory — or *application users*, who administer the platform and
+ * are managed under Settings. The two are kept strictly separate: an
+ * application user is never assessed, and never appears in the directory.
+ * A person needing both gets one account of each kind.
+ */
+export const APPLICATION_ROLES: ReadonlyArray<SystemRole> = [
+  SYSTEM_ROLES.HR_ADMIN,
+  SYSTEM_ROLES.EXECUTIVE,
+  SYSTEM_ROLES.SUPER_ADMIN,
+  SYSTEM_ROLES.SYSTEM,
+];
+
+export const STAFF_ROLES: ReadonlyArray<SystemRole> = [
+  SYSTEM_ROLES.EMPLOYEE,
+  SYSTEM_ROLES.LINE_MANAGER,
+];
+
+/**
+ * The break-glass account. Holds every permission implicitly and is hidden
+ * from every list in the UI, so it can only be created or changed out-of-band
+ * (scripts/create-admin.ts --super). Never surface it to end users.
+ */
+export const SUPER_ADMIN_ROLE = SYSTEM_ROLES.SUPER_ADMIN;
+
+export function isApplicationUser(roles: ReadonlyArray<SystemRole>): boolean {
+  return roles.some((r) => APPLICATION_ROLES.includes(r));
+}
 
 /** Fixed 1–5 competency rating scale (PRD §4.8). */
 export const RATING_SCALE = [

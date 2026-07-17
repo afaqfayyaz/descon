@@ -2,7 +2,11 @@ import type { ObjectId } from "mongodb";
 import { getDb } from "@/lib/db/client";
 import { COLLECTIONS } from "@/lib/db/collections";
 import type { User } from "@/lib/domain/types/user.types";
-import type { SystemRole } from "@/lib/domain/constants";
+import {
+  APPLICATION_ROLES,
+  SUPER_ADMIN_ROLE,
+  type SystemRole,
+} from "@/lib/domain/constants";
 
 type NewUser = Omit<User, "_id">;
 type UserPatch = Partial<
@@ -28,6 +32,12 @@ export interface UserFilters {
   jobFamilyId?: ObjectId;
   /** Filter to users holding this system role (directory category tabs). */
   role?: SystemRole;
+  /**
+   * Which kind of account to list. "staff" are the people who get assessed
+   * (People Directory); "application" are the accounts that administer the
+   * platform (Settings). Omit to list both.
+   */
+  kind?: "staff" | "application";
 }
 
 export const userRepo = {
@@ -79,13 +89,20 @@ export const userRepo = {
       .toArray();
   },
 
-  /** Employees matching a campaign's targeting filters. */
+  /**
+   * Employees matching a campaign's targeting filters. Application users
+   * (admins, executives, the super admin) are never assessed, so they can
+   * never be pulled into a campaign even if they match on division/family.
+   */
   async findParticipants(filter: {
     jobFamilyId?: ObjectId;
     divisions?: string[];
   }): Promise<User[]> {
     const db = await getDb();
-    const query: Record<string, unknown> = { isActive: true };
+    const query: Record<string, unknown> = {
+      isActive: true,
+      systemRoles: { $nin: APPLICATION_ROLES },
+    };
     if (filter.jobFamilyId) query.jobFamily = filter.jobFamilyId;
     if (filter.divisions && filter.divisions.length > 0) {
       query.division = { $in: filter.divisions };
@@ -156,11 +173,26 @@ function buildUserQuery(filters: UserFilters): Record<string, unknown> {
   const query: Record<string, unknown> = {};
   if (filters.division) query.division = filters.division;
   if (filters.jobFamilyId) query.jobFamily = filters.jobFamilyId;
-  if (filters.role) query.systemRoles = filters.role;
   if (filters.search) {
     const rx = new RegExp(escapeRegex(filters.search), "i");
     query.$or = [{ fullName: rx }, { email: rx }, { employeeCode: rx }];
   }
+
+  // Role constraints are combined with $and so the kind filter and an explicit
+  // role tab can't clobber each other on the same systemRoles field.
+  const roleClauses: Record<string, unknown>[] = [];
+
+  // The break-glass account is hidden from every listing, always.
+  roleClauses.push({ systemRoles: { $ne: SUPER_ADMIN_ROLE } });
+
+  if (filters.kind === "staff") {
+    roleClauses.push({ systemRoles: { $nin: APPLICATION_ROLES } });
+  } else if (filters.kind === "application") {
+    roleClauses.push({ systemRoles: { $in: APPLICATION_ROLES } });
+  }
+  if (filters.role) roleClauses.push({ systemRoles: filters.role });
+
+  query.$and = roleClauses;
   return query;
 }
 

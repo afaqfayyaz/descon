@@ -59,12 +59,12 @@ const LIGHT_TEXT: Record<string, string> = {
   critical: "text-gap-critical",
 };
 
-const ALL_ROLES = [
-  "employee",
-  "line_manager",
-  "hr_admin",
-  "executive",
-] as const;
+/**
+ * Staff roles only. Admin/executive access is a separate kind of account
+ * managed under Settings → Application users; granting it here would move the
+ * person out of this directory entirely.
+ */
+const ALL_ROLES = ["employee", "line_manager"] as const;
 
 interface FormState {
   fullName: string;
