@@ -24,8 +24,16 @@ export default async function ExecutivePage() {
           Executive overview
         </h1>
         <div className="rounded-lg border border-dashed border-border bg-surface p-10 text-center text-text-secondary">
-          No assessment results yet. Launch a campaign and complete assessments
-          to populate organisation-wide insights.
+          <p>
+            No assessment results yet. Launch a campaign and complete
+            assessments to populate organisation-wide insights.
+          </p>
+          <Link
+            href="/campaigns"
+            className="mt-4 inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover"
+          >
+            Go to campaigns
+          </Link>
         </div>
       </div>
     );

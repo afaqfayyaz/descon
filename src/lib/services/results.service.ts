@@ -252,7 +252,10 @@ export const resultsService = {
     employeeIds: ObjectId[],
   ): Promise<Record<string, EmployeeSummary>> {
     const out: Record<string, EmployeeSummary> = {};
-    for (const id of employeeIds) {
+    // Per-employee lookups are independent; run them concurrently instead of
+    // serially — this is a directory-page hot path.
+    await Promise.all(
+      employeeIds.map(async (id) => {
       const a = await assessmentRepo.findLatestForEmployee(id);
       if (!a) {
         out[id.toString()] = {
@@ -262,7 +265,7 @@ export const resultsService = {
           gap: null,
           trafficLight: null,
         };
-        continue;
+        return;
       }
       const status = deriveStatus(a);
       let capabilityPercent: number | null = null;
@@ -286,7 +289,8 @@ export const resultsService = {
         gap,
         trafficLight,
       };
-    }
+      }),
+    );
     return out;
   },
 
@@ -343,8 +347,9 @@ export const resultsService = {
         .map((c) => [c._id.toString(), c.name]),
     );
 
-    const entries: EmployeeHistoryEntry[] = [];
-    for (const a of assessments) {
+    // Each assessment's numbers are independent; compute them concurrently.
+    const entries: EmployeeHistoryEntry[] = await Promise.all(
+      assessments.map(async (a) => {
       const status = deriveStatus(a);
       let capabilityPercent: number | null = null;
       let managerLevel: number | null = null;
@@ -385,7 +390,7 @@ export const resultsService = {
         a.selfAssessment.submittedAt ??
         a.createdAt;
 
-      entries.push({
+      return {
         assessmentId: a._id.toString(),
         campaignName: campaignName.get(a.campaignId.toString()) ?? "Assessment",
         date: new Date(date).toISOString(),
@@ -397,8 +402,9 @@ export const resultsService = {
         requiredLevel,
         gap,
         trafficLight,
-      });
-    }
+      };
+      }),
+    );
 
     return entries.sort((a, b) => +new Date(a.date) - +new Date(b.date));
   },

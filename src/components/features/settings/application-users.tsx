@@ -6,6 +6,7 @@ import { Plus, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   createApplicationUserAction,
   deactivateApplicationUserAction,
@@ -94,11 +95,16 @@ export function ApplicationUsers({
     router.refresh();
   }
 
-  async function deactivate(id: string, name: string) {
-    if (!confirm(`Revoke platform access for ${name}?`)) return;
-    setBusyId(id);
-    const res = await deactivateApplicationUserAction(id);
+  const [revoking, setRevoking] = useState<{ id: string; name: string } | null>(
+    null,
+  );
+
+  async function confirmRevoke() {
+    if (!revoking) return;
+    setBusyId(revoking.id);
+    const res = await deactivateApplicationUserAction(revoking.id);
     setBusyId(null);
+    setRevoking(null);
     if (!res.success) {
       setError(res.error);
       return;
@@ -197,7 +203,9 @@ export function ApplicationUsers({
                   <td className="px-3 py-3 text-right">
                     {u.isActive && u.id !== currentUserId && (
                       <button
-                        onClick={() => deactivate(u.id, u.fullName)}
+                        onClick={() =>
+                          setRevoking({ id: u.id, name: u.fullName })
+                        }
                         disabled={busyId === u.id}
                         className="text-xs font-medium text-danger hover:underline disabled:opacity-50"
                       >
@@ -325,6 +333,17 @@ export function ApplicationUsers({
           </div>
         </div>
       </Modal>
+
+      <ConfirmDialog
+        open={revoking !== null}
+        title={`Revoke access for ${revoking?.name ?? ""}?`}
+        body="They won't be able to sign in to Caliber any more. This doesn't touch any assessment data."
+        confirmLabel="Revoke access"
+        destructive
+        busy={busyId !== null}
+        onConfirm={confirmRevoke}
+        onCancel={() => setRevoking(null)}
+      />
     </section>
   );
 }

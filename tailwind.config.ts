@@ -64,7 +64,9 @@ const config: Config = {
         text: {
           primary: "#0F1B2D",
           secondary: "#475569",
-          tertiary: "#8190A5",
+          // 4.76:1 on white — the previous #8190A5 (~3.4:1) failed WCAG AA for
+          // the small text (hints, table headers, timestamps) this is used on.
+          tertiary: "#64748B",
           inverse: "#EAF0FB",
         },
       },

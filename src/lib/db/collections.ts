@@ -15,4 +15,5 @@ export const COLLECTIONS = {
   SETTINGS: "settings",
   NOTIFICATIONS: "notifications",
   ACCESS_TOKENS: "accessTokens",
+  LOGIN_ATTEMPTS: "loginAttempts",
 } as const;

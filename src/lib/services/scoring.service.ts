@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 
+import { getClient } from "@/lib/db/client";
 import { assessmentRepo } from "@/lib/db/repositories/assessment.repository";
 import { assessmentResultRepo } from "@/lib/db/repositories/assessment-result.repository";
 import { campaignRepo } from "@/lib/db/repositories/campaign.repository";
@@ -216,8 +217,27 @@ export const scoringService = {
 
     const { rows, docs } = await buildRows(assessment);
 
-    await assessmentResultRepo.deleteByAssessment(assessment._id);
-    await assessmentResultRepo.insertMany(docs);
+    // Replace the persisted rows atomically: a crash between delete and insert
+    // must not leave a finalized assessment with no results. Transactions need
+    // a replica set (Atlas has one; a standalone local Mongo doesn't), so fall
+    // back to the sequential path when they're unsupported.
+    const client = await getClient();
+    const session = client.startSession();
+    try {
+      await session.withTransaction(async () => {
+        await assessmentResultRepo.deleteByAssessment(assessment._id, session);
+        await assessmentResultRepo.insertMany(docs, session);
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!/Transaction numbers|replica set|sessions are not supported/i.test(message)) {
+        throw error;
+      }
+      await assessmentResultRepo.deleteByAssessment(assessment._id);
+      await assessmentResultRepo.insertMany(docs);
+    } finally {
+      await session.endSession();
+    }
 
     const hasOutliers = rows.some(
       (r) =>

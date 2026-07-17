@@ -1,4 +1,4 @@
-import type { ObjectId } from "mongodb";
+import type { ClientSession, ObjectId } from "mongodb";
 import { getDb } from "@/lib/db/client";
 import { COLLECTIONS } from "@/lib/db/collections";
 import type { AssessmentResult } from "@/lib/domain/types/assessment.types";
@@ -6,19 +6,25 @@ import type { AssessmentResult } from "@/lib/domain/types/assessment.types";
 type NewResult = Omit<AssessmentResult, "_id">;
 
 export const assessmentResultRepo = {
-  async deleteByAssessment(assessmentId: ObjectId): Promise<void> {
+  async deleteByAssessment(
+    assessmentId: ObjectId,
+    session?: ClientSession,
+  ): Promise<void> {
     const db = await getDb();
     await db
       .collection<AssessmentResult>(COLLECTIONS.ASSESSMENT_RESULTS)
-      .deleteMany({ assessmentId });
+      .deleteMany({ assessmentId }, { session });
   },
 
-  async insertMany(data: NewResult[]): Promise<number> {
+  async insertMany(
+    data: NewResult[],
+    session?: ClientSession,
+  ): Promise<number> {
     if (data.length === 0) return 0;
     const db = await getDb();
     const result = await db
       .collection<AssessmentResult>(COLLECTIONS.ASSESSMENT_RESULTS)
-      .insertMany(data as AssessmentResult[]);
+      .insertMany(data as AssessmentResult[], { session });
     return result.insertedCount;
   },
 

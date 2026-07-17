@@ -32,10 +32,13 @@ export default async function CampaignsPage({
   searchParams: { period?: string; status?: string };
 }) {
   await requirePermission("campaign.view");
-  // One-on-one direct assignments are listed on the Assessments hub instead.
-  const all = (await campaignRepo.findAll()).filter(
-    (c) => c.description !== DIRECT_ASSIGNMENT_DESCRIPTION,
-  );
+  // One listing rule everywhere: one-on-one assignments ARE campaigns (they're
+  // stored as single-participant ones), so they appear here with a badge
+  // rather than being hidden — otherwise this page says "no campaigns" while
+  // the dashboard counts them as running.
+  const all = await campaignRepo.findAll();
+  const isOneOnOne = (c: { description: string | null }) =>
+    c.description === DIRECT_ASSIGNMENT_DESCRIPTION;
 
   // Distinct months from campaign start dates (newest first).
   const months = [...new Set(all.map((c) => monthKey(new Date(c.startDate))))]
@@ -116,8 +119,12 @@ export default async function CampaignsPage({
         <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">
           {all.length === 0 ? (
             <>
-              No campaigns yet. Create your first one or run{" "}
-              <code>npm run cycle</code> to generate a demo campaign.
+              No campaigns yet. Create one to assess a group, or send a
+              one-on-one assessment from the{" "}
+              <Link href="/assessment" className="text-primary hover:underline">
+                Assessments
+              </Link>{" "}
+              page.
             </>
           ) : (
             "No campaigns match the selected filters."
@@ -144,12 +151,19 @@ export default async function CampaignsPage({
                   className="border-b border-slate-100 last:border-0 hover:bg-slate-50"
                 >
                   <td className="px-5 py-3">
-                    <Link
-                      href={`/campaigns/${c._id.toString()}`}
-                      className="font-medium text-primary hover:underline"
-                    >
-                      {c.name}
-                    </Link>
+                    <span className="flex items-center gap-2">
+                      <Link
+                        href={`/campaigns/${c._id.toString()}`}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        {c.name}
+                      </Link>
+                      {isOneOnOne(c) && (
+                        <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-[11px] font-medium text-accent">
+                          1-on-1
+                        </span>
+                      )}
+                    </span>
                   </td>
                   <td className="px-3 py-3 text-slate-500">
                     {new Date(c.startDate).toLocaleDateString("en-GB", {

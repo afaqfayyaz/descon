@@ -95,7 +95,7 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard
-          label="Employees"
+          label="People"
           value={headcount}
           icon={Users}
           accent="navy"
@@ -106,7 +106,11 @@ export default async function DashboardPage() {
           value={overview.kpis.employeesAssessed}
           icon={BadgeCheck}
           accent="blue"
-          hint={`avg capability ${overview.kpis.avgCapabilityPercent}%`}
+          hint={
+            overview.kpis.employeesAssessed > 0
+              ? `avg capability ${overview.kpis.avgCapabilityPercent}%`
+              : "no results yet"
+          }
         />
         <KpiCard
           label="Critical Gaps"
@@ -267,6 +271,27 @@ export default async function DashboardPage() {
             </Widget>
           </WidgetGrid>
         </>
+      ) : running.length > 0 ? (
+        // Assessments are out but nothing is scored yet — saying "get started"
+        // here would contradict the Running Assessments count above.
+        <div className="rounded-lg border border-border bg-surface p-6 shadow-card">
+          <h2 className="text-lg font-semibold text-text-primary">
+            Assessments in progress
+          </h2>
+          <p className="mt-1 text-sm text-text-secondary">
+            {running.length} assessment{running.length === 1 ? " is" : "s are"}{" "}
+            collecting responses. Company-wide gap analysis appears once both
+            the self and manager sides are submitted.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="/assessment">Track progress</Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href="/campaigns">View campaigns</Link>
+            </Button>
+          </div>
+        </div>
       ) : (
         <div className="rounded-lg border border-border bg-surface p-6 shadow-card">
           <h2 className="text-lg font-semibold text-text-primary">Get started</h2>
@@ -274,7 +299,7 @@ export default async function DashboardPage() {
             The competency framework is loaded. Review it, then send an
             assessment to populate company-wide gap analysis.
           </p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Button asChild>
               <Link href="/assessment">Send an assessment</Link>
             </Button>

@@ -125,6 +125,13 @@ export async function ensureIndexes(): Promise<void> {
       { key: { assessmentId: 1, kind: 1 }, name: "by_assessment_kind" },
     ]);
 
+  await db.collection(COLLECTIONS.LOGIN_ATTEMPTS).createIndexes([
+    { key: { email: 1, createdAt: -1 }, name: "by_email_time" },
+    // Self-pruning: attempts vanish 15 minutes after they're recorded, which
+    // is also the lockout window checked in auth.ts.
+    { key: { createdAt: 1 }, expireAfterSeconds: 900, name: "ttl" },
+  ]);
+
   await db
     .collection(COLLECTIONS.AUDIT_LOGS)
     .createIndexes([

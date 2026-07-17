@@ -27,6 +27,14 @@ export default function GlobalError({
           An unexpected error occurred. You can try again, and if it keeps
           happening, contact your administrator.
         </p>
+        {error.digest && (
+          <p className="mt-2 text-xs text-text-tertiary">
+            Reference code for support:{" "}
+            <code className="rounded bg-surface-sunken px-1.5 py-0.5">
+              {error.digest}
+            </code>
+          </p>
+        )}
         <button
           type="button"
           onClick={reset}
