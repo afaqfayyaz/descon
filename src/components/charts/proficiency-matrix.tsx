@@ -64,7 +64,7 @@ function Row({
           ) : (
             <span className="inline-block w-5" />
           )}
-          <span className="truncate">
+          <span className="truncate" title={`${row.code} ${row.name}`.trim()}>
             <span className="mr-1.5 text-xs font-semibold text-text-tertiary">
               {row.code}
             </span>

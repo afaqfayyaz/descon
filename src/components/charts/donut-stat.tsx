@@ -36,7 +36,11 @@ export function DonutStat({
   color = ACCENT,
   centerValueFormatter = (v) => `${Math.round(v)}%`,
 }: DonutStatProps) {
-  const clamped = Math.max(0, Math.min(100, value));
+  // The ring is a 0–100 gauge, but the centre must tell the truth: a team can
+  // exceed its required level (capability > 100%), and rounding a real 132%
+  // down to "100%" would misreport it. Guard NaN from empty datasets too.
+  const safe = Number.isFinite(value) ? value : null;
+  const clamped = Math.max(0, Math.min(100, safe ?? 0));
   const data = segments ?? [
     { value: clamped, color, label: label ?? "" },
     { value: 100 - clamped, color: TRACK, label: "" },
@@ -68,7 +72,7 @@ export function DonutStat({
       </ResponsiveContainer>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-3xl font-bold tabular-nums text-text-primary">
-          {centerValueFormatter(clamped)}
+          {safe === null ? "—" : centerValueFormatter(safe)}
         </span>
         {label && (
           <span className="mt-0.5 text-[11px] uppercase tracking-wide text-text-tertiary">

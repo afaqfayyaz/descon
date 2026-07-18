@@ -59,6 +59,10 @@ export function TrendLineChart({
           tick={{ fontSize: 11, fill: "#475569" }}
           axisLine={{ stroke: GRID }}
           tickLine={false}
+          // Date labels must drop out rather than collide once campaigns
+          // accumulate; always keep the first and last for orientation.
+          minTickGap={24}
+          interval="preserveStartEnd"
         />
         <YAxis
           domain={domain ?? ["auto", "auto"]}
