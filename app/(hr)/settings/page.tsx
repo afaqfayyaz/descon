@@ -3,13 +3,18 @@ import { settingsService } from "@/lib/services/settings.service";
 import { employeeService } from "@/lib/services/employee.service";
 import { ThresholdsForm } from "@/components/features/settings/thresholds-form";
 import { ApplicationUsers } from "@/components/features/settings/application-users";
+import { PermissionMatrix } from "@/components/features/settings/permission-matrix";
 
 export default async function SettingsPage() {
   const session = await requirePermission("settings.manage");
   const [thresholds, customised, appUsers] = await Promise.all([
     settingsService.getThresholds(),
     settingsService.isCustomised(),
-    employeeService.list({ kind: "application" }, { page: 1, limit: 100 }),
+    // Revoked accounts stay listed so access can be restored from here.
+    employeeService.list(
+      { kind: "application", includeInactive: true },
+      { page: 1, limit: 100 },
+    ),
   ]);
 
   return (
@@ -22,6 +27,8 @@ export default async function SettingsPage() {
       </div>
 
       <ApplicationUsers users={appUsers.items} currentUserId={session.user.id} />
+
+      <PermissionMatrix />
 
       <section className="space-y-3">
         <div>

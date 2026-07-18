@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Pencil,
@@ -108,6 +108,7 @@ export function EmployeesManager({
   jobFamilies,
 }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [editing, setEditing] = useState<EmployeeListItem | null>(null);
   const [creating, setCreating] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -122,11 +123,20 @@ export function EmployeesManager({
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
+  /** Carry the page's org filters (division, designation) through navigation. */
+  function withFilters(params: URLSearchParams): URLSearchParams {
+    for (const key of ["division", "designation"]) {
+      const v = searchParams.get(key);
+      if (v) params.set(key, v);
+    }
+    return params;
+  }
+
   function runSearch() {
     const params = new URLSearchParams();
     if (searchInput.trim()) params.set("search", searchInput.trim());
     if (activeRole && activeRole !== "all") params.set("role", activeRole);
-    router.push(`/employees?${params.toString()}`);
+    router.push(`/employees?${withFilters(params).toString()}`);
   }
 
   function goToPage(p: number) {
@@ -134,7 +144,7 @@ export function EmployeesManager({
     if (search) params.set("search", search);
     if (activeRole && activeRole !== "all") params.set("role", activeRole);
     params.set("page", String(p));
-    router.push(`/employees?${params.toString()}`);
+    router.push(`/employees?${withFilters(params).toString()}`);
   }
 
   function openCreate() {

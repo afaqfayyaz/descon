@@ -13,9 +13,14 @@ import type {
   CreateApplicationUserInput,
   CreateUserInput,
   ImportUserRow,
+  UpdateApplicationUserInput,
   UpdateUserInput,
 } from "@/lib/domain/validation/user.schema";
-import { SUPER_ADMIN_ROLE, SYSTEM_ROLES } from "@/lib/domain/constants";
+import {
+  APPLICATION_ROLES,
+  SUPER_ADMIN_ROLE,
+  SYSTEM_ROLES,
+} from "@/lib/domain/constants";
 
 const BCRYPT_COST = 12;
 
@@ -184,6 +189,84 @@ export const employeeService = {
     return user;
   },
 
+  /**
+   * Edit an application user: details, access level, optional password reset.
+   * Two lockout guards make this safe to expose in the UI:
+   * - you cannot change your own access level (only another admin can), so a
+   *   mis-click can't strip your own admin rights mid-session;
+   * - the last active HR Admin cannot be demoted, so the org can never end up
+   *   with zero accounts able to manage the platform.
+   */
+  async updateApplicationUser(
+    id: ObjectId,
+    input: UpdateApplicationUserInput,
+    actor: Actor,
+  ): Promise<User> {
+    const current = await userRepo.findByIdAny(id);
+    // Staff and the hidden super admin are equally out of scope here.
+    if (
+      !current ||
+      current.systemRoles.includes(SUPER_ADMIN_ROLE) ||
+      !current.systemRoles.some((r) => APPLICATION_ROLES.includes(r))
+    ) {
+      throw new NotFoundError("Application user");
+    }
+
+    const sameRoles =
+      [...input.systemRoles].sort().join(",") ===
+      [...current.systemRoles].sort().join(",");
+
+    if (id.equals(actor.id) && !sameRoles) {
+      throw new ConflictError(
+        "You can't change your own access level — ask another admin",
+      );
+    }
+
+    const dropsHrAdmin =
+      current.systemRoles.includes(SYSTEM_ROLES.HR_ADMIN) &&
+      !input.systemRoles.includes(SYSTEM_ROLES.HR_ADMIN);
+    if (dropsHrAdmin && current.isActive) {
+      const admins = await userRepo.countActiveWithRole(SYSTEM_ROLES.HR_ADMIN);
+      if (admins <= 1) {
+        throw new ConflictError(
+          "This is the only active HR Admin — grant someone else HR Admin access first",
+        );
+      }
+    }
+
+    const byEmail = await userRepo.findByEmailAny(input.email);
+    if (byEmail && !byEmail._id.equals(id)) {
+      throw new ConflictError(`Email "${input.email}" is already in use`);
+    }
+
+    const updated = await userRepo.update(id, {
+      fullName: input.fullName,
+      email: input.email,
+      systemRoles: input.systemRoles,
+      ...(input.password
+        ? { passwordHash: await bcrypt.hash(input.password, BCRYPT_COST) }
+        : {}),
+      updatedAt: new Date(),
+      updatedBy: actor.id,
+    });
+    if (!updated) throw new NotFoundError("Application user");
+
+    await auditService.log({
+      actorId: actor.id,
+      actorEmail: actor.email,
+      action: "user.application_updated",
+      entityType: "User",
+      entityId: id,
+      before: { email: current.email, systemRoles: current.systemRoles },
+      after: {
+        email: updated.email,
+        systemRoles: updated.systemRoles,
+        passwordReset: Boolean(input.password),
+      },
+    });
+    return updated;
+  },
+
   async update(
     id: ObjectId,
     input: UpdateUserInput,
@@ -245,6 +328,15 @@ export const employeeService = {
     // isn't enough to lock everyone out.
     if (current.systemRoles.includes(SUPER_ADMIN_ROLE)) {
       throw new NotFoundError("Employee");
+    }
+    // Lockout guard: the org must always keep at least one active HR Admin.
+    if (current.isActive && current.systemRoles.includes(SYSTEM_ROLES.HR_ADMIN)) {
+      const admins = await userRepo.countActiveWithRole(SYSTEM_ROLES.HR_ADMIN);
+      if (admins <= 1) {
+        throw new ConflictError(
+          "This is the only active HR Admin — grant someone else HR Admin access first",
+        );
+      }
     }
     await userRepo.update(id, {
       isActive: false,

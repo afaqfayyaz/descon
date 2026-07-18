@@ -37,31 +37,47 @@ const CATEGORIES: {
 export default async function EmployeesPage({
   searchParams,
 }: {
-  searchParams: { search?: string; page?: string; role?: string };
+  searchParams: {
+    search?: string;
+    page?: string;
+    role?: string;
+    division?: string;
+    designation?: string;
+  };
 }) {
   await requirePermission("user.manage");
 
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
   const search = searchParams.search?.trim() ?? "";
+  const division = searchParams.division?.trim() || undefined;
+  const designation =
+    searchParams.designation && ObjectId.isValid(searchParams.designation)
+      ? new ObjectId(searchParams.designation)
+      : undefined;
   const activeCat =
     CATEGORIES.find((c) => c.id === searchParams.role) ?? CATEGORIES[0]!;
   const baseFilter = {
     search: search || undefined,
+    division,
+    designation,
     role: activeCat.role,
     kind: "staff" as const,
     onlyInactive: activeCat.onlyInactive,
   };
 
-  const [{ items, total }, roles, families, allUsers, counts] =
+  const [{ items, total }, roles, families, allUsers, divisions, counts] =
     await Promise.all([
       employeeService.list(baseFilter, { page, limit: LIMIT }),
       roleRepo.findAll(),
       jobFamilyRepo.findAll(),
       userRepo.findMany({ kind: "staff" }, { page: 1, limit: 500 }),
+      userRepo.distinctDivisions(),
       Promise.all(
         CATEGORIES.map((c) =>
           userRepo.count({
             search: search || undefined,
+            division,
+            designation,
             role: c.role,
             kind: "staff",
             onlyInactive: c.onlyInactive,
@@ -87,6 +103,8 @@ export default async function EmployeesPage({
   const qs = (role?: string) => {
     const p = new URLSearchParams();
     if (search) p.set("search", search);
+    if (division) p.set("division", division);
+    if (designation) p.set("designation", designation.toString());
     if (role && role !== "all") p.set("role", role);
     const s = p.toString();
     return s ? `/employees?${s}` : "/employees";
@@ -145,6 +163,58 @@ export default async function EmployeesPage({
       </div>
 
       <TabLinks tabs={tabs} activeId={activeCat.id} className="overflow-x-auto" />
+
+      {/* Org filters (native GET form — works without client JS). */}
+      <form method="get" className="flex flex-wrap items-end gap-3">
+        {search && <input type="hidden" name="search" value={search} />}
+        {activeCat.id !== "all" && (
+          <input type="hidden" name="role" value={activeCat.id} />
+        )}
+        <label className="flex flex-col gap-1 text-xs font-medium text-text-tertiary">
+          Division
+          <select
+            name="division"
+            defaultValue={division ?? ""}
+            className="rounded-md border border-border-strong bg-surface px-3 py-1.5 text-sm text-text-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">All divisions</option>
+            {divisions.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1 text-xs font-medium text-text-tertiary">
+          Designation
+          <select
+            name="designation"
+            defaultValue={designation?.toString() ?? ""}
+            className="rounded-md border border-border-strong bg-surface px-3 py-1.5 text-sm text-text-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">All designations</option>
+            {roles.map((r) => (
+              <option key={r._id.toString()} value={r._id.toString()}>
+                {r.name} ({r.code})
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          type="submit"
+          className="rounded-md border border-border-strong bg-surface px-4 py-1.5 text-sm font-medium text-text-secondary hover:bg-surface-sunken"
+        >
+          Apply
+        </button>
+        {(division || designation) && (
+          <Link
+            href={activeCat.id !== "all" ? `/employees?role=${activeCat.id}` : "/employees"}
+            className="px-2 py-1.5 text-sm text-text-tertiary hover:text-primary"
+          >
+            Clear
+          </Link>
+        )}
+      </form>
 
       <EmployeesManager
         employees={items}

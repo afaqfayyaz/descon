@@ -31,6 +31,8 @@ export interface UserFilters {
   search?: string;
   division?: string;
   jobFamilyId?: ObjectId;
+  /** Filter to one designation / job grade (directory filter). */
+  designation?: ObjectId;
   /** Filter to users holding this system role (directory category tabs). */
   role?: SystemRole;
   /**
@@ -131,6 +133,14 @@ export const userRepo = {
     return db.collection<User>(COLLECTIONS.USERS).find(query).toArray();
   },
 
+  /** Active accounts holding a role — e.g. the last-admin lockout guard. */
+  async countActiveWithRole(role: SystemRole): Promise<number> {
+    const db = await getDb();
+    return db
+      .collection<User>(COLLECTIONS.USERS)
+      .countDocuments({ systemRoles: role, isActive: true });
+  },
+
   /** How many active people report to this person. */
   async countReports(managerId: ObjectId): Promise<number> {
     const db = await getDb();
@@ -202,6 +212,7 @@ function buildUserQuery(filters: UserFilters): Record<string, unknown> {
   const query: Record<string, unknown> = {};
   if (filters.division) query.division = filters.division;
   if (filters.jobFamilyId) query.jobFamily = filters.jobFamilyId;
+  if (filters.designation) query.designation = filters.designation;
   if (filters.onlyInactive) query.isActive = false;
   else if (!filters.includeInactive) query.isActive = true;
   if (filters.search) {

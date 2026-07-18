@@ -62,6 +62,27 @@ export type CreateApplicationUserInput = z.infer<
   typeof createApplicationUserSchema
 >;
 
+/**
+ * Editing an application user: details, access level, and an optional password
+ * reset. Only the two grantable access levels are accepted — super_admin can
+ * never arrive through a request (see systemRoleSchema).
+ */
+export const updateApplicationUserSchema = z.object({
+  fullName: z.string().min(1, "Name is required").max(160),
+  email: z.string().email("A valid email is required").max(200),
+  systemRoles: z
+    .array(z.enum(["hr_admin", "executive"]))
+    .min(1, "Pick at least one access level"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(100)
+    .optional(),
+});
+export type UpdateApplicationUserInput = z.infer<
+  typeof updateApplicationUserSchema
+>;
+
 /** One row from a bulk CSV/Excel import (codes resolved server-side). */
 export const importUserRowSchema = z.object({
   fullName: z.string().min(1).max(160),

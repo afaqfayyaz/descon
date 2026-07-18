@@ -10,6 +10,7 @@ import {
   createApplicationUserSchema,
   createUserSchema,
   importUserRowSchema,
+  updateApplicationUserSchema,
   updateUserSchema,
 } from "@/lib/domain/validation/user.schema";
 import { AppError } from "@/lib/utils/errors";
@@ -106,6 +107,38 @@ export async function deactivateApplicationUserAction(
     return { success: true };
   } catch (error) {
     return fail(error, "deactivateApplicationUserAction");
+  }
+}
+
+export async function updateApplicationUserAction(
+  id: string,
+  input: unknown,
+): Promise<Result> {
+  try {
+    const session = await requirePermission("settings.manage");
+    const data = updateApplicationUserSchema.parse(input);
+    await employeeService.updateApplicationUser(
+      new ObjectId(id),
+      data,
+      actorFrom(session),
+    );
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (error) {
+    return fail(error, "updateApplicationUserAction");
+  }
+}
+
+export async function restoreApplicationUserAction(
+  id: string,
+): Promise<Result> {
+  try {
+    const session = await requirePermission("settings.manage");
+    await employeeService.restore(new ObjectId(id), actorFrom(session));
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (error) {
+    return fail(error, "restoreApplicationUserAction");
   }
 }
 
