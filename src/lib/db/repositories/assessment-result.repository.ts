@@ -301,6 +301,7 @@ export const assessmentResultRepo = {
       division: string;
       avgGap: number;
       avgManager: number;
+      avgRequired: number;
       critical: number;
       count: number;
     }[]
@@ -318,6 +319,7 @@ export const assessmentResultRepo = {
             _id: "$denormalized.division",
             avgGap: { $avg: "$gap" },
             avgManager: { $avg: "$managerLevel" },
+            avgRequired: { $avg: "$requiredLevel" },
             critical: {
               $sum: { $cond: [{ $eq: ["$trafficLight", "critical"] }, 1, 0] },
             },
@@ -330,6 +332,7 @@ export const assessmentResultRepo = {
       division: (r._id as string) ?? "—",
       avgGap: r.avgGap as number,
       avgManager: r.avgManager as number,
+      avgRequired: r.avgRequired as number,
       critical: r.critical as number,
       count: r.count as number,
     }));
@@ -341,6 +344,7 @@ export const assessmentResultRepo = {
       areaId: ObjectId;
       avgGap: number;
       avgManager: number;
+      avgSelf: number | null;
       avgRequired: number;
       count: number;
     }[]
@@ -358,6 +362,7 @@ export const assessmentResultRepo = {
             _id: "$denormalized.areaId",
             avgGap: { $avg: "$gap" },
             avgManager: { $avg: "$managerLevel" },
+            avgSelf: { $avg: "$selfLevel" },
             avgRequired: { $avg: "$requiredLevel" },
             count: { $sum: 1 },
           },
@@ -368,6 +373,7 @@ export const assessmentResultRepo = {
       areaId: r._id as ObjectId,
       avgGap: r.avgGap as number,
       avgManager: r.avgManager as number,
+      avgSelf: (r.avgSelf as number | null) ?? null,
       avgRequired: r.avgRequired as number,
       count: r.count as number,
     }));

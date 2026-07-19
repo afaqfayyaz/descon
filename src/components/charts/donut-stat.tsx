@@ -48,6 +48,13 @@ export function DonutStat({
   const outer = size / 2;
   const inner = outer - thickness;
 
+  // Scale the centre text to the hole: a fixed 30px font fits "67%" in a
+  // 160px donut but "132%" overflowed a 110px one straight through the ring.
+  const hole = inner * 2;
+  const valueText = safe === null ? "—" : centerValueFormatter(safe);
+  const valueFont = Math.min(30, Math.floor((hole * 0.92) / (valueText.length * 0.6)));
+  const labelFont = Math.max(8, Math.min(11, Math.floor(hole / 9)));
+
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <ResponsiveContainer width={size} height={size}>
@@ -71,11 +78,18 @@ export function DonutStat({
         </PieChart>
       </ResponsiveContainer>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold tabular-nums text-text-primary">
-          {safe === null ? "—" : centerValueFormatter(safe)}
+        <span
+          className="font-bold tabular-nums leading-none text-text-primary"
+          style={{ fontSize: valueFont }}
+        >
+          {valueText}
         </span>
         {label && (
-          <span className="mt-0.5 text-[11px] uppercase tracking-wide text-text-tertiary">
+          <span
+            className="mt-1 max-w-full truncate px-1 uppercase tracking-wide text-text-tertiary"
+            style={{ fontSize: labelFont, maxWidth: hole }}
+            title={label}
+          >
             {label}
           </span>
         )}

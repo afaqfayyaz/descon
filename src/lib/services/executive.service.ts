@@ -22,6 +22,7 @@ export interface DivisionRow {
   division: string;
   avgGap: number;
   avgManager: number;
+  avgRequired: number;
   trafficLight: TrafficLight;
   critical: number;
   count: number;
@@ -42,6 +43,8 @@ export interface CampaignTrend {
 export interface AreaRadarRow {
   area: string;
   manager: number;
+  /** Average self rating — the third series on the source profile chart. */
+  self: number | null;
   required: number;
 }
 export interface DesignationRow {
@@ -67,6 +70,8 @@ export interface ExecutiveOverview {
     avgRequired: number;
     avgCurrent: number;
     avgGap: number;
+    /** Overall status of the org-wide average gap (drives the board message). */
+    trafficLight: TrafficLight;
   };
   topGaps: TopGap[];
   strengths: TopGap[];
@@ -100,6 +105,7 @@ export const executiveService = {
         avgRequired: 0,
         avgCurrent: 0,
         avgGap: 0,
+        trafficLight: "strong",
       },
       topGaps: [],
       strengths: [],
@@ -165,6 +171,7 @@ export const executiveService = {
         division: d.division,
         avgGap: round2(d.avgGap),
         avgManager: round2(d.avgManager),
+        avgRequired: round2(d.avgRequired),
         trafficLight: getTrafficLight(d.avgGap, gapThresholds),
         critical: d.critical,
         count: d.count,
@@ -214,10 +221,11 @@ export const executiveService = {
           "—",
         sequence: areaMap.get(a.areaId.toString())?.sequence ?? 999,
         manager: round2(a.avgManager),
+        self: a.avgSelf !== null ? round2(a.avgSelf) : null,
         required: round2(a.avgRequired),
       }))
       .sort((a, b) => a.sequence - b.sequence)
-      .map(({ area, manager, required }) => ({ area, manager, required }));
+      .map(({ area, manager, self, required }) => ({ area, manager, self, required }));
 
     // Designation-wise Required vs Current.
     const designations: DesignationRow[] = byDesignation
@@ -255,6 +263,7 @@ export const executiveService = {
         employeesAssessed,
         avgCapabilityPercent,
         criticalGaps: overall.critical,
+        trafficLight: getTrafficLight(overall.avgGap, gapThresholds),
         avgRequired: round2(overall.avgRequired),
         avgCurrent: round2(overall.avgManager),
         avgGap: round2(overall.avgGap),

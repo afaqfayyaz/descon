@@ -17,6 +17,12 @@ export interface RadarDatum {
   area: string;
   manager: number;
   required: number;
+  /**
+   * Average self rating. The source PetroSkills profile plots three series —
+   * Self, Line Manager, Required — so the calibration story (who over- or
+   * under-rates themselves) is visible on the same pentagon.
+   */
+  self?: number | null;
 }
 
 export interface RadarGapChartProps {
@@ -105,6 +111,7 @@ export function RadarGapChart({
   height = 320,
   seriesLabel = "Manager level",
 }: RadarGapChartProps) {
+  const hasSelf = data.some((d) => typeof d.self === "number");
   return (
     <ResponsiveContainer width="100%" height={height}>
       <RadarChart data={data} outerRadius="66%" margin={{ top: 18, right: 24, bottom: 6, left: 24 }}>
@@ -124,6 +131,17 @@ export function RadarGapChart({
           fillOpacity={0.12}
           isAnimationActive={false}
         />
+        {hasSelf && (
+          <Radar
+            name="Self rating"
+            dataKey="self"
+            stroke="#94A3B8"
+            fill="#94A3B8"
+            fillOpacity={0.15}
+            strokeDasharray="4 3"
+            isAnimationActive={false}
+          />
+        )}
         <Radar
           name={seriesLabel}
           dataKey="manager"

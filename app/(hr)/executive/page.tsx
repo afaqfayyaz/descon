@@ -11,7 +11,19 @@ import { GroupedBarChart } from "@/components/charts/grouped-bar-chart";
 import { RadarGapChart } from "@/components/charts/radar-gap-chart";
 import { DistributionDonut } from "@/components/charts/distribution-donut";
 import { TrendLineChart } from "@/components/charts/trend-line-chart";
-import { gapColor, trafficColor } from "@/components/charts/chart-theme";
+import { gapColor } from "@/components/charts/chart-theme";
+import { TrafficLight } from "@/components/shared/traffic-light";
+
+/**
+ * Plain-English leadership guidance per overall status — taken verbatim from
+ * the source workbook's "Skill Gap Score — easy guide for leadership".
+ */
+const BOARD_MESSAGE: Record<string, string> = {
+  strong: "No action needed — maintain and recognise.",
+  developing: "Targeted development plan recommended.",
+  needs_focus: "Structured development plan required.",
+  critical: "Urgent intervention and close monitoring needed.",
+};
 
 export default async function ExecutivePage() {
   await requirePermission("report.org");
@@ -49,11 +61,13 @@ export default async function ExecutivePage() {
     value: g.avgGap,
     color: gapColor(g.avgGap),
   }));
+  // Matches the source workbook's "Division-wise: Required vs Current
+  // Proficiency & Gap" three-series chart.
   const divisionData = data.divisions.map((d) => ({
     division: d.division,
-    "Avg gap": d.avgGap,
-    "Critical": d.critical,
-    color: trafficColor(d.trafficLight),
+    Required: d.avgRequired,
+    Current: d.avgManager,
+    Gap: d.avgGap,
   }));
   const trendData = data.trends.map((t) => ({
     name: t.name,
@@ -95,8 +109,12 @@ export default async function ExecutivePage() {
           title="Capability Status"
           info="Average manager level vs required, organisation-wide."
         >
-          <div className="flex justify-center py-4">
+          <div className="flex flex-col items-center gap-3 py-4">
             <DonutStat value={data.kpis.avgCapabilityPercent} label="Capability" size={180} />
+            <TrafficLight status={data.kpis.trafficLight} />
+            <p className="max-w-[260px] text-center text-xs text-text-secondary">
+              {BOARD_MESSAGE[data.kpis.trafficLight]}
+            </p>
           </div>
         </Widget>
 
@@ -135,14 +153,15 @@ export default async function ExecutivePage() {
               category: d.designation,
               required: d.required,
               current: d.current,
+              gap: d.gap,
             }))}
             categoryKey="category"
             series={[
               { key: "required", label: "Required", color: "#94a3b8" },
               { key: "current", label: "Current", color: "#0a84ff" },
+              { key: "gap", label: "Gap", color: "#F97316" },
             ]}
             domain={[0, 5]}
-            height={Math.max(200, data.designations.length * 52)}
           />
         </Widget>
 
@@ -160,7 +179,7 @@ export default async function ExecutivePage() {
 
         <Widget
           title="Division Comparison"
-          info="Average gap and number of critical gaps per division."
+          info="Average required vs current proficiency and the resulting gap, per division."
           className="xl:col-span-2"
           empty={divisionData.length === 0}
         >
@@ -168,10 +187,10 @@ export default async function ExecutivePage() {
             data={divisionData}
             categoryKey="division"
             series={[
-              { key: "Avg gap", label: "Avg gap", color: "#0A84FF" },
-              { key: "Critical", label: "Critical gaps", color: "#EF4444" },
+              { key: "Required", label: "Required", color: "#94a3b8" },
+              { key: "Current", label: "Current", color: "#0A84FF" },
+              { key: "Gap", label: "Gap", color: "#F97316" },
             ]}
-            height={Math.max(200, divisionData.length * 48)}
           />
         </Widget>
 
