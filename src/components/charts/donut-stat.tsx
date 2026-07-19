@@ -50,9 +50,14 @@ export function DonutStat({
 
   // Scale the centre text to the hole: a fixed 30px font fits "67%" in a
   // 160px donut but "132%" overflowed a 110px one straight through the ring.
+  // Bold tabular digits run ~0.7em per character, and the text needs clear
+  // air inside the hole (0.8) — an exact fit still reads as touching.
   const hole = inner * 2;
   const valueText = safe === null ? "—" : centerValueFormatter(safe);
-  const valueFont = Math.min(30, Math.floor((hole * 0.92) / (valueText.length * 0.6)));
+  const valueFont = Math.min(
+    30,
+    Math.floor((hole * 0.8) / (Math.max(valueText.length, 2) * 0.7)),
+  );
   const labelFont = Math.max(8, Math.min(11, Math.floor(hole / 9)));
 
   return (
